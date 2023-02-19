@@ -2,12 +2,11 @@ import React from 'react'
 import { View,Text,FlatList,StyleSheet,Animated,ActivityIndicator } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 // import { Dummy_Data } from '../../Data/dummy';
-import DrinkItem from './DrinkItem';
+import OrderItem from './OrderItem';
 import  { useState, useEffect } from 'react';
 
 
-
-const DrinkList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
+const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
 
       // const [scrollY, setScrollY] = useState(0);
 
@@ -17,13 +16,13 @@ const DrinkList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
       // };
 
     const renderItem = ({item}) => {
-        return <DrinkItem
+        return <OrderItem
          id={item.id}
          name={item.name}
          description={item.description}
          image={item.image}
          price = {item.price}
-         drink_category ={item.drink_category}
+         category ={item.category}
 
          />
          
@@ -34,7 +33,7 @@ const DrinkList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
   
       const fetchProducts = async () => {
 
-        let url = 'http://192.168.43.4:8000/api/drinks/';
+        let url = 'http://192.168.43.4:8000/api/orders/';
         if (category) {
           url += `?category=${category}`;
         }
@@ -105,4 +104,4 @@ const style = StyleSheet.create({
 
 })
 
-export default DrinkList;
+export default OrderList;

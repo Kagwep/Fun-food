@@ -16,13 +16,13 @@ const FruitsList = ({contentInset,contentOffset,contentContainerStyle,bounces,on
       // };
 
     const renderItem = ({item}) => {
-        return <FrutsItem
+        return <FruitsItem
          id={item.id}
-         fruit_name={item.fruit_name}
-         fruit_description={item.fruit_description}
-         fruit_image={item.fruit_image}
-         fruit_price = {item.fruit_price}
-         fruit_category ={item.fruit_category}
+         name={item.name}
+         description={item.description}
+         image={item.image}
+         price = {item.price}
+         category ={item.category}
 
          />
          
@@ -35,7 +35,7 @@ const FruitsList = ({contentInset,contentOffset,contentContainerStyle,bounces,on
 
         let url = 'http://192.168.43.4:8000/api/fruits/';
         if (category) {
-          url += `?fruits_category=${category}`;
+          url += `?category=${category}`;
         }
         if (search) {
           url += `?search=${search}`;
@@ -72,7 +72,6 @@ const FruitsList = ({contentInset,contentOffset,contentContainerStyle,bounces,on
         keyExtractor = {item => item.id}
         style={{  flexGrow:1,width: '100%' }}
         renderItem = {renderItem}
-        numColumns={2}
         refreshControl = {
             <RefreshControl
                 refreshing={false}

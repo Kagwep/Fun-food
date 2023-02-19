@@ -3,10 +3,11 @@ import { TouchableOpacity,Text,StyleSheet, View,Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-const DrinkItem = ({
-  id,name,description,
-  image,price,
-  drink_category
+
+const WishItem = ({
+  id,fruit_name,fruit_description,
+  fruit_image,fruit_price,
+  fruit_category
 }) => {
     const navigation = useNavigation();
     const [color, setColor] = useState('white');
@@ -19,27 +20,28 @@ const DrinkItem = ({
         <TouchableOpacity
         activeOpacity={1}
         style={style.card}
-        onPress={() => navigation.navigate('Drink', 
-        {drinkId:id, name,description,image,drink_category,price
+        onPress={() => navigation.navigate('Fruit', 
+        {fruitId:id, fruit_name,fruit_description,fruit_image,fruit_category,fruit_price
         })}
         >
             <View>
             <Image
               style={style.tinyLogo}
               source={{
-                uri: image,
+                uri: fruit_image,
               }}
             />
               <TouchableOpacity onPress={handlePress}  style={{ position: 'absolute', top: 1, right: 1,backgroundColor:'#A7C7E7',borderRadius: 50, overflow: 'hidden', padding:2 }}>
                 <Ionicons name="ios-heart" size={18} color={color} />
               </TouchableOpacity>
             </View>
+            
             <View style={style.info}>
               <View style={style.des}>
-            <Text style={style.text2}>ksh {price}</Text>
-            <Text style={style.text}>{name}</Text>
-            </View>
-            <View style={style.cart}>
+              <Text style={style.text2}>ksh {fruit_price}</Text>
+              <Text style={style.text}>{fruit_name}</Text>
+              </View>
+              <View style={style.cart}>
                 <TouchableOpacity
                 style={style.cas}
                 >
@@ -48,6 +50,7 @@ const DrinkItem = ({
                 </TouchableOpacity>
               </View>
             </View>
+
             
 
 
@@ -60,21 +63,26 @@ const DrinkItem = ({
 const style = StyleSheet.create({
 
     card:{
-      marginVertical:5,
-      backgroundColor:'white',
-      borderRadius:5,
-      flexDirection:'row',
+        marginVertical:5,
+        backgroundColor:'white',
+        borderRadius:5,
+        flexDirection:'row',
+        
         
         
         
     },
     container: {
         flex: 1,
-        alignItems:"center",
-        justifyContent: "center",
+        // alignItems:"center",
+        // justifyContent: "center",
         paddingHorizontal: 3,
 
         
+      },
+      des:{
+        alignItems:'center',
+        justifyContent:'center'
       },
       tinyLogo: {
         width: 100,
@@ -83,6 +91,7 @@ const style = StyleSheet.create({
       },
       text:{
         textAlign:"center",
+        fontSize:18,
       }
       ,
       text1:{
@@ -92,7 +101,8 @@ const style = StyleSheet.create({
       ,
       text2:{
         textAlign:"center",
-        color:'red'
+        color:'red',
+        fontSize:18,
       },
       text4:{
         textAlign:"center",
@@ -113,11 +123,7 @@ const style = StyleSheet.create({
         flexDirection:'row',
         paddingLeft:15,
       },
-      des:{
-        alignItems:'center',
-        justifyContent:'center'
-      },
 
 });
 
-export default DrinkItem;
+export default WishItem;

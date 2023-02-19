@@ -185,7 +185,6 @@ const HomeScreen = () => {
         </TouchableOpacity>
       )}
        
-        <Text style={{padding:5, fontSize:14,fontWeight:'bold',textAlign:'center'}}> All Products </Text>
         <View style={{flexDirection:'row'}}>
         {/* <Ionicons name="swap-vertical" size={32} onPress={() => setOrder('price')} />
         <Ionicons name="md-arrow-dropup" size={32} onPress={() => setOrder('-price')} />

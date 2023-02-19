@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import ProfileScreen from '../Screens/ProfileScreen';
 import ProfileDetails from '../Screens/ProfileDetails';
 import { HomeTabs } from './Tab';
-import FoodDetails from '../Screens/FoodDetails';
+// import FoodDetails from '../Screens/FoodDetails';
 // import AuctionDetails from '../Screens/AuctionDetails';
 // import MarketDetails from '../Screens/MarketDetails';
 import OrdersDetails from '../Screens/OrderDetails';
@@ -16,6 +16,13 @@ import OrdersDetails from '../Screens/OrderDetails';
 // import MarketForm from '../Components/Forms/MarketForm';
 // import ShopForm from '../Components/Forms/ShopForm';
 import WishListDetails from '../Screens/WishListDetails';
+import DrinkDetails from '../Screens/DrinkDetails';
+import FoodDetails from '../Screens/FoodDetails';
+import FruitDetails from '../Screens/FruitsDetails';
+import FoodScreen from '../Screens/FoodScreen';
+import DrinkScreen from '../Screens/DrinksScreen';
+import FruitsScreen from '../Screens/FoodScreen';
+import NewFruitsScreen from '../Screens/NewFruitScreen';
 
 const Stack = createStackNavigator();
 
@@ -31,15 +38,18 @@ export const HomeStack =() => {
       <Stack.Screen name="Food" component={FoodDetails} />
       <Stack.Screen name="WishList" component={WishListDetails} />
       <Stack.Screen name="ProfileDetails" component={ProfileDetails} />
-      {/* <Stack.Screen name="Shop" component={ShopDetails} />
-      <Stack.Screen name="ShopProduct" component={ShopProductsDetails} />
-      <Stack.Screen name="Market" component={MarketDetails} />
-      <Stack.Screen name="LogIn" component={Login} />
-      <Stack.Screen name="MarketProductForm" component={MarketProductForm} />
+      <Stack.Screen name="Drink" component={DrinkDetails} />
+      <Stack.Screen name="Fruit" component={FruitDetails} />
+      <Stack.Screen name="Foods" component={FoodScreen} />
+    
+      <Stack.Screen name="Drinks" component={DrinkScreen} />
+      <Stack.Screen name="Fruits" component={NewFruitsScreen} />
+
+      {/* <Stack.Screen name="MarketProductForm" component={MarketProductForm} />
       <Stack.Screen name="ShopProductForm" component={ShopProductForm} />
       <Stack.Screen name="MarketForm" component={MarketForm} />
-      <Stack.Screen name="ShopForm" component={ShopForm} />
-       */}
+      <Stack.Screen name="ShopForm" component={ShopForm} /> */}
+      
     </Stack.Navigator>
   );
 }

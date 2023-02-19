@@ -1,6 +1,7 @@
 import React from 'react'
 import { View,Text,StyleSheet, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import OrderList from '../Components/Home/OrderList';
 
 // import ProfileDetails from './ProfileDetails';
 
@@ -10,9 +11,7 @@ const OrdersScreen = () => {
  
   return (
     <View style={style.screen}>
-        <Text> Orders Screen</Text>
-        
-        {/* <Button title='some Details' onPress={() => navigation.navigate('Profile',{profileId:1})}/> */}
+      <OrderList />
     </View>
   )
 }

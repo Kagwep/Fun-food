@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const ProfileScreen = () => {
   return (
-    <View style={style.screen}>
+    <View>
     <Text> Home Screen</Text>
     
     {/* <Button title='some Details' onPress={() => navigation.navigate('Profile',{profileId:1})}/> */}

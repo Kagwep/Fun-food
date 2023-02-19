@@ -14,10 +14,10 @@ const DrinkDetails = () => {
    const navigation = useNavigation();
    const [Result, SetResult] = useState('');
 
-   const {drinkId, drink_name,drink_description,drink_image,drink_price} = route.params;
+   const {drinkId, name,description,image,price} = route.params;
    useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle:{drink_category},
+      headerTitle:{category},
       headerLeft: () => (
         <HeaderBackButton 
           tintColor='white'
@@ -35,19 +35,19 @@ const DrinkDetails = () => {
             <View style={{backgroundColor:'white'}}>
               <Image 
               style={style.tinyLogo}
-              source={{uri: drink_image}}
+              source={{uri: image}}
               />
               </View>
               <View style={style.pdetails}>
                 <View style ={style.pdet}>
                   <View>
-                    <Text style={style.text1}> {drink_name}</Text>
-                    <Text style ={style.pdes}> {drink_description}</Text>
+                    <Text style={style.text1}> {name}</Text>
+                    <Text style ={style.pdes}> {description}</Text>
                   </View>
                     <View style={style.pricedes}>
                     {/* <Text style={style.np}>ksh {price-product_discount} </Text> */}
                     {/* <Text style={style.text3}> {(((product_discount)/price)*100).toFixed(2)} % Discount</Text> */}
-                    <Text style={style.p}>ksh {drink_price}</Text>
+                    <Text style={style.p}>ksh {price}</Text>
                     </View>
                     {/* <View style={{flexDirection:'row',justifyContent:"space-around"}}>
                       <Text style={{color:'red'}}>{product_stock_alert}</Text>

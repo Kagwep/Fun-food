@@ -1,35 +1,35 @@
 import React,{useState,useEffect} from 'react'
 import { View,Text,FlatList,StyleSheet } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
-import CategoryItem from './CategoryItem';
+import DrinkCategoryItem from './DrinkCategoryItem';
 // import React, { useState, useEffect } from 'react';
-import { MainCategories } from '../../Data/MainCategory';
+// import { MainCategories } from '../../Data/MainCategory';
 
-const CatgoryList = ({setCategory}) => {
+const DrinkCatgoryList = ({setCategory}) => {
     const renderItem = ({item,index}) => {
-        return <CategoryItem id={item.id} name={item.name} image={item.image} setCategory={setCategory} index={index} active={item.id === catId} handlePress = {() => setCatId(item.id)}/>
+        return <DrinkCategoryItem id={item.id} name={item.drink_name} setCategory={setCategory} index={index} active={item.id === catId} handlePress = {() => setCatId(item.id)}/>
     }
 
-    // const [categories, setCategories] = useState([]);
+    const [drink_categories, setDrinkCategories] = useState([]);
 
     const [catId,setCatId] = useState(1);
-    // useEffect(() => {
-    //     const fetchCategories = async () => {
-    //       const response = await fetch('http://192.168.43.4:8000/api/categories/');
-    //       const data = await response.json();
-    //       setCategories(data);
-    //     };
+    useEffect(() => {
+        const fetchDrinkCategories = async () => {
+          const response = await fetch('http://192.168.43.4:8000/api/drink_categories/');
+          const data = await response.json();
+          setDrinkCategories(data);
+        };
     
-    //     fetchCategories();
-    //   }, []);
+        fetchDrinkCategories();
+      }, []);
     
-    //   console.log(categories);
+      console.log(drink_categories);
 
   return (
     <View style={style.ev}>
         <FlatList
         
-        data = {MainCategories}
+        data = {drink_categories}
         keyExtractor = {item => item.id}
         renderItem = {renderItem}
         refreshControl = {
@@ -60,4 +60,4 @@ const style = StyleSheet.create({
 
 })
 
-export default CatgoryList;
+export default DrinkCatgoryList;

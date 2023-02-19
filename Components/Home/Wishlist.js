@@ -2,12 +2,11 @@ import React from 'react'
 import { View,Text,FlatList,StyleSheet,Animated,ActivityIndicator } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 // import { Dummy_Data } from '../../Data/dummy';
-import DrinkItem from './DrinkItem';
+import WishItem from './WishItem';
 import  { useState, useEffect } from 'react';
 
 
-
-const DrinkList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
+const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
 
       // const [scrollY, setScrollY] = useState(0);
 
@@ -17,13 +16,13 @@ const DrinkList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
       // };
 
     const renderItem = ({item}) => {
-        return <DrinkItem
+        return <WishItem
          id={item.id}
-         name={item.name}
-         description={item.description}
-         image={item.image}
-         price = {item.price}
-         drink_category ={item.drink_category}
+         fruit_name={item.fruit_name}
+         fruit_description={item.fruit_description}
+         fruit_image={item.fruit_image}
+         fruit_price = {item.fruit_price}
+         fruit_category ={item.fruit_category}
 
          />
          
@@ -34,9 +33,9 @@ const DrinkList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
   
       const fetchProducts = async () => {
 
-        let url = 'http://192.168.43.4:8000/api/drinks/';
+        let url = 'http://192.168.43.4:8000/api/wishlist/';
         if (category) {
-          url += `?category=${category}`;
+          url += `?fruits_category=${category}`;
         }
         if (search) {
           url += `?search=${search}`;
@@ -105,4 +104,4 @@ const style = StyleSheet.create({
 
 })
 
-export default DrinkList;
+export default WishList;
