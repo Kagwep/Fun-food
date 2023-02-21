@@ -1,13 +1,11 @@
 import React , { useState } from 'react'
-import { TouchableOpacity,Text,StyleSheet, View,Image } from 'react-native';
+import { TouchableOpacity,Text,StyleSheet, View,Image ,Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 
 const OrderItem = ({
-  id,name,description,
-  image,price,
-  category
+  id,item_details,setOrders
 }) => {
     const navigation = useNavigation();
     const [color, setColor] = useState('white');
@@ -15,20 +13,45 @@ const OrderItem = ({
     const handlePress = () => {
       setColor(color === 'white' ? 'red' : 'white');
     };
+    const deleteOrder = async () => {
+      const response = await fetch(`http://192.168.43.4:8000/api/orders/${id}/`, {
+        method: 'DELETE',
+        // headers: {
+        //   'Content-Type': 'application/json',
+        //   'Authorization': `Bearer ${token}`
+        // }
+      });
+      if (response.ok) {
+        setOrders(prevOrders => prevOrders.filter(order => order.id !== id));
+        Alert.alert(
+          item_details.name,
+          'Order deleted successfully!',
+          [
+            {
+              text: 'OK',
+              onPress: () => console.log('OK Pressed')
+            }
+          ],
+          { cancelable: false }
+        );
+      } else {
+        Alert.alert('Error', 'Failed to delete order');
+      }
+    }
   return (
-    <View style={style.container}>
+    <View style={[style.container, style.shadowProp]}>
         <TouchableOpacity
         activeOpacity={1}
-        style={style.card}
-        onPress={() => navigation.navigate('Fruit', 
-        {fruitId:id, name,description,image,category,price
-        })}
+        style={[style.card,style.shadowProp]}
+        // onPress={() => navigation.navigate('Fruit', 
+        // {fruitId:id, name,description,image,category,price
+        // })}
         >
             <View>
             <Image
               style={style.tinyLogo}
               source={{
-                uri: image,
+                uri: item_details.image,
               }}
             />
               <TouchableOpacity onPress={handlePress}  style={{ position: 'absolute', top: 1, right: 1,backgroundColor:'#A7C7E7',borderRadius: 50, overflow: 'hidden', padding:2 }}>
@@ -38,15 +61,16 @@ const OrderItem = ({
             
             <View style={style.info}>
               <View style={style.des}>
-              <Text style={style.text2}>ksh {price}</Text>
-              <Text style={style.text}>{name}</Text>
+              <Text style={style.text2}>ksh {item_details.price}</Text>
+              <Text style={style.text}>{item_details.name}</Text>
               </View>
               <View style={style.cart}>
                 <TouchableOpacity
                 style={style.cas}
+                onPress={deleteOrder}
                 >
-                  <Ionicons name="add" size={18} color={'white'} />
-                  <Text style={{textAlign:"center",fontSize:18,fontWeight:'400'}}> Add to Order</Text>
+                  <Ionicons name="trash" size={18} color={'white'} />
+          
                 </TouchableOpacity>
               </View>
             </View>
@@ -67,6 +91,8 @@ const style = StyleSheet.create({
         backgroundColor:'white',
         borderRadius:5,
         flexDirection:'row',
+        elevation: 40,
+        
         
         
         
@@ -122,6 +148,12 @@ const style = StyleSheet.create({
       info:{
         flexDirection:'row',
         paddingLeft:15,
+      },
+      shadowProp: {
+        shadowColor: '#171717',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
       },
 
 });

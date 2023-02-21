@@ -15,20 +15,18 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
       //   setScrollY(currentScrollY);
       // };
 
+      const [orders, setOrders] = useState([]);
+
     const renderItem = ({item}) => {
         return <OrderItem
          id={item.id}
-         name={item.name}
-         description={item.description}
-         image={item.image}
-         price = {item.price}
-         category ={item.category}
-
+         item_details={item.item_details}
+         setOrders={setOrders}
          />
          
     }
 
-    const [products, setProducts] = useState([]);
+    
 
   
       const fetchProducts = async () => {
@@ -45,7 +43,7 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
         }
         const response = await fetch(url);
         const data = await response.json();
-        setProducts(data);
+        setOrders(data);
       }
       
 
@@ -56,11 +54,20 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
     // if (loading) return <ActivityIndicator size='large' marginVertical={30} />
    
 
-    console.log(products)
+    console.log(orders)
     console.log(category,"dfsgdfjkl")
 
+    const renderFooter = () => {
+      return (
+        <View style={{ backgroundColor: 'white', padding: 10 }}>
+          <Text style={{textAlign:'center'}}>You have {orders.length} items in Orders List</Text>
+        </View>
+      );
+    };
+
   return (
-    <View>
+    <View style={style.orderlist}>
+      <View style={style.inner}>
         <Animated.FlatList 
         // contentInset={contentInset}
         // contentOffset={contentOffset}
@@ -68,10 +75,11 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
         bounces={false}
         scrollEventThrottle={scrollEventThrottle}
         onScroll={onScroll}
-        data = {products}
+        data = {orders}
         keyExtractor = {item => item.id}
         style={{  flexGrow:1,width: '100%' }}
         renderItem = {renderItem}
+        ListFooterComponent={renderFooter}
         refreshControl = {
             <RefreshControl
                 refreshing={false}
@@ -81,14 +89,15 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
         showsVerticalScrollIndicator={false}
         
         />
+        </View>
      </View>
   )
 }
 
 
 const style = StyleSheet.create({
-    eventlist:{
-        padding:10,
+    orderlist:{
+        flex:1
     } ,
      header: {
       height: 100,
@@ -101,6 +110,9 @@ const style = StyleSheet.create({
       top: 0,
       zIndex: 10000
     },
+    inner:{
+      flex:1
+    }
 
 })
 

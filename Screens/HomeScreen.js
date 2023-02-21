@@ -7,6 +7,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FoodList from '../Components/Home/FoodList';
+import HomeFoodList from '../Components/Home/HomeFoodList';
+import HomeFruitsList from '../Components/Home/HomeFruitsList';
+import HomeDrinksList from '../Components/Home/HomeDrinksList';
 
 
 const HEADER_HEIGHT = 250;
@@ -117,24 +120,13 @@ const HomeScreen = () => {
 
   return (
     
-    <View style={style.screen}>
+    <ScrollView 
+    style={style.screen}
+    refreshControl={null}
+    >
           
-      <Animated.View
-        bounces={false}
-        style={[style.header,{ transform: [{ translateY: headerTranslateY }] }]}
-        onLayout={(event) => {
-          let {height} = event.nativeEvent.layout;
-          setClampedScroll(Animated.diffClamp(
-            Animated.add(
-              scrollAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-                extrapolateLeft: 'clamp'
-              }),
-              offsetAnim
-            ), 0, height)
-          );
-        }}
+      <View
+        style={[style.header]}
       >
         {/* <View style={style.info}>
         <View style={style.name}>
@@ -193,48 +185,83 @@ const HomeScreen = () => {
 
       </View>
 
-      </Animated.View>
+      </View>
 
 
-
-      <View style={{  zIndex: 0}}>
-
-        <FoodList
-
-      loading={loading}
-      category={category}
-      order={order}
-      search ={search}
-      filter={filter}
-      contentContainerStyle={{ paddingTop: HEADER_MAX_HEIGHT}}
-      // contentInset={{ top: HEADER_HEIGHT }}
-      // contentOffset={{ y: -HEADER_HEIGHT }}
+      <View
       
-      // navbarTranslate = {navbarTranslate}
-      scrollEventThrottle={16}
-        // onScroll={Animated.event(
-        //   [
-        //     {
-        //       nativeEvent: {
-        //         contentOffset: { y: scrollAnim }
-        //       }
-        //     }
-        //   ],
-        //   { useNativeDriver: true }
-        // )}
-        
-        // onScroll={Animated.event(
-        //   [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-        //   { useNativeDriver: true },
-        // )}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }], // event.nativeEvent.contentOffset.x to scrollX
-          { useNativeDriver: true }, // use native driver for animation
-        )}
-        />
-        {/* <Button title='Details' onPress={() => navigation.navigate('Event')}/> */}
+      style={{ paddingTop: HEADER_MAX_HEIGHT}}
+      >
+
+        <View style={style.food}>
+
+        <View style={style.foodheader}>
+        <Text style={style.foodtext}> Delicious Food </Text>
         </View>
-    </View>
+
+       
+        <HomeFoodList
+        
+        loading={loading}
+        category={category}
+        order={order}
+        search ={search}
+        filter={filter}
+        />
+
+        </View>
+
+
+      </View>
+
+      <View>
+
+
+      <View style={style.fruit}>
+
+      <View style={style.fruitheader}>
+           <Text style={style.fruittext}> Juicy ! Succulent ! Refreshing, and Flavorful </Text>
+
+      </View>
+   
+        <HomeFruitsList
+                
+        loading={loading}
+        category={category}
+        order={order}
+        search ={search}
+        filter={filter}
+        />
+
+      </View>
+
+
+      <View style={style.drink}>
+        <View style={style.drinkheader}>
+        <Text style={style.drinktext}> Find your perfect drink and savor the moment </Text>
+        </View>
+      
+
+      <HomeDrinksList
+              
+        loading={loading}
+        category={category}
+        order={order}
+        search ={search}
+        filter={filter}
+        />
+      </View>
+
+
+
+
+      </View>
+
+      
+
+
+
+    </ScrollView>
   )
 }
 
@@ -248,6 +275,12 @@ const style = StyleSheet.create({
    
 
     },
+    foodtext:{
+      textAlign:'center',
+      fontSize:20,
+      fontWeight:'400'
+    },
+
     heder:{
         textAlign:"center",
         fontSize:24,
@@ -297,6 +330,19 @@ const style = StyleSheet.create({
       marginBottom:4,
 
     },
+    fruit:{
+      padding:10,
+    },
+    drink:{
+      padding:10
+    },
+    foodheader:{
+      backgroundColor:'#FFC000'
+    },
+    fruitheader:{
+      backgroundColor:'#FFC000'
+    },
+
     catbac:{
 
       backgroundColor:"#ffff",
@@ -308,6 +354,9 @@ const style = StyleSheet.create({
       fontSize:18,
       color:"#000",
       fontWeight:'bold'
+    },
+    food:{
+     padding:10,
     },
     logo:{
         flexDirection:"row",
@@ -339,6 +388,18 @@ const style = StyleSheet.create({
         fontStyle:'italic',
         fontWeight:'bold',
         fontSize:11
+    },
+    fruittext:{
+      textAlign:'center',
+      fontSize:18,
+    },
+    drinktext:{
+      textAlign:'center',
+      fontWeight:'400',
+      fontSize:18
+    },
+    drinkheader:{
+      backgroundColor:'#FFC000'
     }
 
 })

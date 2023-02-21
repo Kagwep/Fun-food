@@ -3,24 +3,19 @@ import { TouchableOpacity,Text,StyleSheet, View,Image,Alert } from 'react-native
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-const FoodItem = ({
+const NewHomeFoodItem = ({
   id,name,description,
   image,price,
   category
 }) => {
     const navigation = useNavigation();
     const [color, setColor] = useState('white');
-    const [unOrders, setUnorders] = useState([]);
 
     const handlePress = () => {
       setColor(color === 'white' ? 'red' : 'white');
     };
 
 const handleSubmit = async(e) => {
-
-  const newItem = { id,name,image, category,price };
-
-  setUnorders([...unOrders, newItem]);
 
   e.preventDefault();
   try {
@@ -81,8 +76,6 @@ const handleSubmit = async(e) => {
 const handleSubmitWish = async(e) => {
 
 
-  const newItem = { id, category };
-
 
   e.preventDefault();
   try {
@@ -139,25 +132,9 @@ const handleSubmitWish = async(e) => {
               <TouchableOpacity onPress={handleSubmitWish}  style={{ position: 'absolute', top: 1, right: 1,backgroundColor:'#A7C7E7',borderRadius: 50, overflow: 'hidden', padding:2 }}>
                 <Ionicons name="ios-heart" size={18} color={color} />
               </TouchableOpacity>
+              <Text style={style.text}>{name}</Text>
             </View>
-            <View style={style.info}>
-            <View style={style.des}>
-            <Text style={style.text2}>ksh {price}</Text>
-            <Text style={style.text}>{name}</Text>
-            </View>
-            <View style={style.cart}>
-                <TouchableOpacity
-                style={style.cas}
-                onPress={handleSubmit}
-                >
-                  <Ionicons name="add" size={18} color={'white'} />
-                  <Text style={{textAlign:"center",fontSize:18,fontWeight:'400'}}> Add to Order</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            
-
-
+ 
         </TouchableOpacity>
     </View>
 
@@ -171,6 +148,7 @@ const style = StyleSheet.create({
       backgroundColor:'white',
       borderRadius:5,
       flexDirection:'row',
+      backgroundColor:'green'
         
         
     },
@@ -183,12 +161,18 @@ const style = StyleSheet.create({
         
       },
       tinyLogo: {
-        width: 100,
-        height: 100,
+        width: 150,
+        height: 150,
         borderRadius:5,
       },
       text:{
         textAlign:"center",
+        position: 'absolute',
+        bottom: 1, 
+        right: 50,
+        fontSize:26,
+        color:'#ffffff',
+        
       }
       ,
       text1:{
@@ -226,4 +210,4 @@ const style = StyleSheet.create({
 
 });
 
-export default FoodItem;
+export default NewHomeFoodItem;

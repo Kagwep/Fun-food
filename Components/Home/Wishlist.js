@@ -18,17 +18,16 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
     const renderItem = ({item}) => {
         return <WishItem
          id={item.id}
-         fruit_name={item.fruit_name}
-         fruit_description={item.fruit_description}
-         fruit_image={item.fruit_image}
-         fruit_price = {item.fruit_price}
-         fruit_category ={item.fruit_category}
+         item_id={item.item_name}
+         item_details={item.item_details}
+         category={item.category}
+         setWishes ={setWishes}
 
          />
          
     }
 
-    const [products, setProducts] = useState([]);
+    const [wishes, setWishes] = useState([]);
 
   
       const fetchProducts = async () => {
@@ -45,7 +44,7 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
         }
         const response = await fetch(url);
         const data = await response.json();
-        setProducts(data);
+        setWishes(data);
       }
       
 
@@ -56,8 +55,24 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
     // if (loading) return <ActivityIndicator size='large' marginVertical={30} />
    
 
-    console.log(products)
+    console.log(wishes)
     console.log(category,"dfsgdfjkl")
+
+    const renderFooter = () => {
+      return (
+        <View style={{ backgroundColor: 'white', padding: 10 }}>
+          <Text style={{textAlign:'center'}}>You have {wishes.length} items in Wish List</Text>
+        </View>
+      );
+    };
+
+    const renderHeader = () => {
+      return (
+        <View style={{ backgroundColor: 'white', padding: 10 }}>
+          <Text style={{textAlign:'center',fontWeight:'bold'}}>Your  Wish List</Text>
+        </View>
+      );
+    };
 
   return (
     <View>
@@ -68,10 +83,12 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
         bounces={false}
         scrollEventThrottle={scrollEventThrottle}
         onScroll={onScroll}
-        data = {products}
+        data = {wishes}
         keyExtractor = {item => item.id}
         style={{  flexGrow:1,width: '100%' }}
         renderItem = {renderItem}
+        ListFooterComponent={renderFooter}
+        ListHeaderComponent={renderHeader}
         refreshControl = {
             <RefreshControl
                 refreshing={false}

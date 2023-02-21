@@ -1,12 +1,11 @@
 import React from 'react'
 import { View,Text,FlatList,StyleSheet,Animated,ActivityIndicator } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
-// import { Dummy_Data } from '../../Data/dummy';
-import FruitsItem from './FruitsItem';
+import HomeDrinksItem from './HomeDrinksItem';
 import  { useState, useEffect } from 'react';
 
 
-const FruitsList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
+const HomeDrinksList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
 
       // const [scrollY, setScrollY] = useState(0);
 
@@ -16,7 +15,7 @@ const FruitsList = ({contentInset,contentOffset,contentContainerStyle,bounces,on
       // };
 
     const renderItem = ({item}) => {
-        return <FruitsItem
+        return <HomeDrinksItem
          id={item.id}
          name={item.name}
          description={item.description}
@@ -33,7 +32,7 @@ const FruitsList = ({contentInset,contentOffset,contentContainerStyle,bounces,on
   
       const fetchProducts = async () => {
 
-        let url = 'http://192.168.43.4:8000/api/fruits/';
+        let url = 'http://192.168.43.4:8000/api/all/home-drinks/';
         if (category) {
           url += `?category=${category}`;
         }
@@ -56,7 +55,7 @@ const FruitsList = ({contentInset,contentOffset,contentContainerStyle,bounces,on
     // if (loading) return <ActivityIndicator size='large' marginVertical={30} />
    
 
-    console.log("this",products)
+    console.log("this products",products)
     console.log(category,"dfsgdfjkl")
 
   return (
@@ -64,21 +63,18 @@ const FruitsList = ({contentInset,contentOffset,contentContainerStyle,bounces,on
         <Animated.FlatList 
         // contentInset={contentInset}
         // contentOffset={contentOffset}
-        contentContainerStyle={contentContainerStyle}
-        bounces={false}
-        scrollEventThrottle={scrollEventThrottle}
-        onScroll={onScroll}
+        // contentContainerStyle={contentContainerStyle}
+        // bounces={false}
+        // scrollEventThrottle={scrollEventThrottle}
+        // onScroll={onScroll}
         data = {products}
         keyExtractor = {item => item.id}
-        style={{  flexGrow:1,width: '100%' }}
+        // style={{  flexGrow:1,width: '100%' }}
         renderItem = {renderItem}
-        refreshControl = {
-            <RefreshControl
-                refreshing={false}
-                onRefresh = {() => console.log("refreshing")}
-            />
-        }
+        refreshControl = {null}
         showsVerticalScrollIndicator={false}
+        horizontal
+        showsHorizontalScrollIndicator={false}
         
         />
      </View>
@@ -104,4 +100,4 @@ const style = StyleSheet.create({
 
 })
 
-export default FruitsList;
+export default HomeDrinksList;
