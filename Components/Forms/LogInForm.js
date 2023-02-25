@@ -1,28 +1,95 @@
-import React, { useState } from 'react';
+import React, { useState,useLayoutEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {HeaderBackButton} from "@react-navigation/elements";
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 const Login = () => {
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleLogin = async () => {
-    try {
-      const response = await fetch('https://example.com/api/login/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          phone_number: phone,
-          password: password,
-        })
-      });
-      const data = await response.json();
-      console.log(data); // do something with the data
-    } catch (error) {
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+      navigation.setOptions({
+        headerTitle:"Log in",
+        headerLeft: () => (
+          <HeaderBackButton 
+            tintColor='white'
+            onPress={() => navigation.goBack()}
+          
+          />
+        )
+      })
+     },[])
+
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [token, setToken] = useState(null);
+  const [refreshToken, setRefreshToken] = useState(null);
+
+  const handleLogin = () => {
+      // Validate the form fields
+    if (!phoneNumber || !password) {
+        // Display an error message if any of the fields are empty
+        alert('Phone number and password are required');
+        return;
+    } 
+    // Make a POST request to the TokenViewSet to obtain a token
+    fetch('http://192.168.43.4:8000/api/tokens/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        phone_number: phoneNumber,
+        password: password
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // If the request is successful, set the token and refresh token in the app
+      setToken(data.access);
+      setRefreshToken(data.refresh);
+      // Store the token and refresh token in AsyncStorage
+      AsyncStorage.setItem('token', data.access);
+      AsyncStorage.setItem('refresh_token', data.refresh);
+      AsyncStorage.setItem('user',data.user)
+      navigation.navigate('Home');
+
+    })
+    .catch(error => {
+      // If the request fails, display an error message
       console.error(error);
-    }
-  };
+      alert('Login failed');
+    });
+  }
+
+  const handleRefresh = () => {
+    // Make a POST request to the TokenRefreshViewSet to obtain a new token
+    fetch('http://localhost:8000/api/tokens/refresh/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        refresh: refreshToken
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // If the request is successful, set the new token in the app
+      setToken(data.token);
+
+      // Update the token in AsyncStorage
+      AsyncStorage.setItem('token', data.token);
+    })
+    .catch(error => {
+      // If the request fails, display an error message
+      console.error(error);
+      alert('Token refresh failed');
+    });
+  }
+
+  console.log(token)
 
   return (
     <View style={styles.container}>

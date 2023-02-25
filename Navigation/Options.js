@@ -7,7 +7,7 @@ export const NavOptions = (nav) => {
   return {
     headerTintColor: '#ffffff',
     headerStyle:{
-        backgroundColor:'#FFC000',
+        backgroundColor:'#D2B04C',
     },
     headerLeft: () =>(
         // <Ionicons name = 'person-circle' style={{paddingLeft:5}} size={32} color="white" onPress={() => nav.toggleDrawer()}/>

@@ -161,17 +161,21 @@ const style = StyleSheet.create({
         
       },
       tinyLogo: {
-        width: 150,
-        height: 150,
+        width: 100,
+        height: 100,
         borderRadius:5,
       },
       text:{
         textAlign:"center",
         position: 'absolute',
         bottom: 1, 
-        right: 50,
-        fontSize:26,
+        right: 20,
+        fontSize:16,
         color:'#ffffff',
+        fontWeight:'bold',
+        backgroundColor:'#C0C0C0',
+        borderRadius:5,
+        padding:2,
         
       }
       ,

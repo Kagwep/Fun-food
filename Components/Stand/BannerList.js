@@ -17,7 +17,7 @@ const BannersList = ({selectedMarket}) => {
  
 
   return (
-    <View>
+    <View style={style.eventlist}>
         <FlatList
         
         data = {Banners }
@@ -40,7 +40,7 @@ const BannersList = ({selectedMarket}) => {
 
 const style = StyleSheet.create({
     eventlist:{
-        padding:10,
+        borderRadius:10,
     },
 
 })

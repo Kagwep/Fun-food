@@ -36,7 +36,7 @@ const handleSubmit = async(e) => {
   formData.append('delivery_location',delivery_location);
 
   console.log(formData)
-  const response = await fetch('http://192.168.43.4:8000/api/orders/', {
+  const response = await fetch('https://funfood.vercel.app/api/orders/', {
     method: 'POST',
 
     body: formData,
@@ -91,7 +91,7 @@ const handleSubmitWish = async(e) => {
   formData.append('item_id',id);
   formData.append('category',category);
 
-  const response = await fetch('http://192.168.43.4:8000/api/wishlist/', {
+  const response = await fetch('https://funfood.vercel.app/api/wishlist/', {
     method: 'POST',
 
     body: formData,
@@ -145,15 +145,30 @@ const handleSubmitWish = async(e) => {
             <Text style={style.text2}>ksh {price}</Text>
             <Text style={style.text}>{name}</Text>
             </View>
+            <View style={style.car}>
+                <TouchableOpacity
+                style={style.ca}
+                >
+                  <Ionicons name="add-circle" size={22} color={'white'} />
+                  
+                </TouchableOpacity>
+                <Text style={style.x}>1</Text>
+                <TouchableOpacity
+                style={style.ca}
+                >
+                  <Ionicons name="remove-circle" size={22} color={'white'} />
+                  
+                </TouchableOpacity>
+            </View>
             <View style={style.cart}>
                 <TouchableOpacity
                 style={style.cas}
                 onPress={handleSubmit}
                 >
                   <Ionicons name="add" size={18} color={'white'} />
-                  <Text style={{textAlign:"center",fontSize:18,fontWeight:'400'}}> Add to Order</Text>
+                  <Text style={{textAlign:"center",fontSize:15,fontWeight:'400'}}> Add to Order</Text>
                 </TouchableOpacity>
-              </View>
+            </View>
             </View>
             
 
@@ -207,22 +222,44 @@ const style = StyleSheet.create({
       cas:{
         flexDirection:'row',
         backgroundColor:'rgb(255,191,0)',
-        padding:15,
+        padding:5,
         borderRadius:10
+      },
+      ca:{
+
+        flexDirection:'row',
+        backgroundColor:'rgb(255,191,0)',
+        padding:5,
+        borderRadius:10
+
       },
       cart:{
         alignItems:'center',
         justifyContent:'center',
-        padding:10
+        padding:5,
+      },
+      car:{
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center',
+        padding:5,
+        
       },
       info:{
         flexDirection:'row',
-        paddingLeft:15,
+        paddingLeft:5,
       },
       des:{
         alignItems:'center',
         justifyContent:'center'
       },
+      x:{
+        fontSize:18,
+        fontWeight:'300',
+        padding:3,
+        
+        
+      }
 
 });
 

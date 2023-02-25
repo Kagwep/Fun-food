@@ -32,7 +32,7 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
   
       const fetchProducts = async () => {
 
-        let url = 'http://192.168.43.4:8000/api/wishlist/';
+        let url = 'https://funfood.vercel.app/api/wishlist/';
         if (category) {
           url += `?fruits_category=${category}`;
         }

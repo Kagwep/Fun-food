@@ -1,5 +1,5 @@
 import React, { useRef,useState,useEffect }  from 'react'
-import { View,Text,StyleSheet, Button,FlatList,ScrollView,Animated,LayoutAnimation,Image,TouchableOpacity,Dimensions } from 'react-native';
+import { View,Text,StyleSheet, Button,FlatList,ScrollView,Animated,LayoutAnimation,Image,TouchableOpacity,Dimensions,ImageBackground } from 'react-native';
 import CatgoryList from '../Components/Categories/CategoryList';
 import Search from '../Components/Stand/Search';
 import BannersList from '../Components/Stand/BannerList';
@@ -119,9 +119,15 @@ const HomeScreen = () => {
 
 
   return (
-    
+    <View style={[style.screen]}>
+    <ImageBackground
+            style={[style.fixed, style.containter]}
+            source={
+              require('../assets/funfood.webp')
+            }
+      />
     <ScrollView 
-    style={style.screen}
+    style={[style.fixed, style.scrollview]}
     refreshControl={null}
     >
           
@@ -262,6 +268,9 @@ const HomeScreen = () => {
 
 
     </ScrollView>
+    </View>
+    
+
   )
 }
 
@@ -295,7 +304,7 @@ const style = StyleSheet.create({
       left: 0,
       right: 0,
       top: 0,
-      backgroundColor: '#FFC000',
+      backgroundColor:'transparent',
       height: HEADER_MAX_HEIGHT,
       padding:3,
       borderBottomEndRadius:20,
@@ -332,15 +341,22 @@ const style = StyleSheet.create({
     },
     fruit:{
       padding:10,
+      marginTop:10,
     },
     drink:{
-      padding:10
+      padding:10,
+      marginTop:10,
     },
     foodheader:{
-      backgroundColor:'#FFC000'
+      backgroundColor:'#FFFFFF',
+      borderTopStartRadius:10,
+      borderTopEndRadius:10,
+      
     },
     fruitheader:{
-      backgroundColor:'#FFC000'
+      backgroundColor:'#FFFFFF',
+      borderTopStartRadius:10,
+      borderTopEndRadius:10,
     },
 
     catbac:{
@@ -357,6 +373,7 @@ const style = StyleSheet.create({
     },
     food:{
      padding:10,
+     marginTop:10,
     },
     logo:{
         flexDirection:"row",
@@ -392,6 +409,8 @@ const style = StyleSheet.create({
     fruittext:{
       textAlign:'center',
       fontSize:18,
+      color:'green',
+      fontWeight:'bold'
     },
     drinktext:{
       textAlign:'center',
@@ -399,8 +418,24 @@ const style = StyleSheet.create({
       fontSize:18
     },
     drinkheader:{
-      backgroundColor:'#FFC000'
-    }
+      backgroundColor:'#FFFFFF',
+      borderTopStartRadius:10,
+      borderTopEndRadius:10,
+    },
+    containter: {
+      width: Dimensions.get("window").width, //for full screen
+      height: Dimensions.get("window").height //for full screen
+    },
+    fixed: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0
+    },
+   scrollview: {
+     backgroundColor: 'transparent'
+   }
 
 })
 

@@ -14,7 +14,7 @@ export const HomeTabs = () => {
     screenOptions={({route})=>({
         headerShown:false,
         tabBarStyle:{
-            backgroundColor:"#FFC000",
+            backgroundColor:"#D2B04C",
             
 
         },

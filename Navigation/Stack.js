@@ -43,7 +43,7 @@ export const HomeStack =() => {
       <Stack.Screen name="Foods" component={FoodScreen} />
     
       <Stack.Screen name="Drinks" component={DrinkScreen} />
-      <Stack.Screen name="Fruits" component={NewFruitsScreen} />
+      <Stack.Screen name="Juices & Fruits" component={NewFruitsScreen} />
 
       {/* <Stack.Screen name="MarketProductForm" component={MarketProductForm} />
       <Stack.Screen name="ShopProductForm" component={ShopProductForm} />

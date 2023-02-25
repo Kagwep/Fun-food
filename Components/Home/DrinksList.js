@@ -24,6 +24,7 @@ const DrinkList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
          image={item.image}
          price = {item.price}
          drink_category ={item.drink_category}
+         category={item.category}
 
          />
          
@@ -34,7 +35,7 @@ const DrinkList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
   
       const fetchProducts = async () => {
 
-        let url = 'http://192.168.43.4:8000/api/drinks/';
+        let url = 'https://funfood.vercel.app/api/drinks/';
         if (category) {
           url += `?category=${category}`;
         }

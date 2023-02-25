@@ -31,7 +31,7 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
   
       const fetchProducts = async () => {
 
-        let url = 'http://192.168.43.4:8000/api/orders/';
+        let url = 'https://funfood.vercel.app/api/orders/';
         if (category) {
           url += `?category=${category}`;
         }

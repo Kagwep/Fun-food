@@ -31,7 +31,7 @@ const handleSubmit = async(e) => {
   formData.append('delivery_location',delivery_location);
 
   console.log(formData)
-  const response = await fetch('http://192.168.43.4:8000/api/orders/', {
+  const response = await fetch('https://funfood.vercel.app/api/orders/', {
     method: 'POST',
 
     body: formData,
@@ -84,7 +84,7 @@ const handleSubmitWish = async(e) => {
   formData.append('item_id',id);
   formData.append('category',category);
 
-  const response = await fetch('http://192.168.43.4:8000/api/wishlist/', {
+  const response = await fetch('https://funfood.vercel.app/api/wishlist/', {
     method: 'POST',
 
     body: formData,
@@ -161,17 +161,21 @@ const style = StyleSheet.create({
         
       },
       tinyLogo: {
-        width: 150,
-        height: 150,
+        width: 100,
+        height: 100,
         borderRadius:5,
       },
       text:{
         textAlign:"center",
         position: 'absolute',
         bottom: 1, 
-        right: 50,
-        fontSize:26,
+        right: 20,
+        fontSize:16,
         color:'#ffffff',
+        fontWeight:'bold',
+        backgroundColor:'#C0C0C0',
+        borderRadius:5,
+        padding:2,
         
       }
       ,

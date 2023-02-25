@@ -28,7 +28,7 @@ const BannerItem = ({
         <TouchableOpacity
         style={style.card}
         >
-        <Image style={{ width: screenWidth - 20, height: 130,padding:10,borderRadius:10 }}  source={image}/>
+        <Image style={{ width: screenWidth - 20, height: 130,padding:10 }}  source={image}/>
         </TouchableOpacity>
     </View>
 
@@ -51,6 +51,7 @@ const style = StyleSheet.create({
         justifyContent: "center",
         paddingHorizontal: 3,
         marginBottom:10,
+        borderRadius:10
 
         
       },

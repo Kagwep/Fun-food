@@ -32,7 +32,7 @@ const HomeFoodList = ({contentInset,contentOffset,contentContainerStyle,bounces,
   
       const fetchProducts = async () => {
 
-        let url = 'http://192.168.43.4:8000/api/all/home-food/';
+        let url = 'https://funfood.vercel.app/api/all/home-food/';
         if (category) {
           url += `?category=${category}`;
         }
@@ -59,7 +59,7 @@ const HomeFoodList = ({contentInset,contentOffset,contentContainerStyle,bounces,
     console.log(category,"dfsgdfjkl")
 
   return (
-    <View>
+    <View style={style.eventlist}>
         <Animated.FlatList 
         // contentInset={contentInset}
         // contentOffset={contentOffset}
@@ -83,9 +83,14 @@ const HomeFoodList = ({contentInset,contentOffset,contentContainerStyle,bounces,
 
 
 const style = StyleSheet.create({
-    eventlist:{
-        padding:10,
-    } ,
+  eventlist:{
+    backgroundColor:'#ffffff',
+    borderBottomLeftRadius:5,
+    borderBottomRightRadius:5,
+    paddingTop:10,
+    paddingBottom:15,
+    
+} ,
      header: {
       height: 100,
       justifyContent: 'center',

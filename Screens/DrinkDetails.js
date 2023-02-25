@@ -14,7 +14,7 @@ const DrinkDetails = () => {
    const navigation = useNavigation();
    const [Result, SetResult] = useState('');
 
-   const {drinkId, name,description,image,price} = route.params;
+   const {drinkId, name,description,image,price,category} = route.params;
    useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle:{category},

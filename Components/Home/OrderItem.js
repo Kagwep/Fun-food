@@ -14,7 +14,7 @@ const OrderItem = ({
       setColor(color === 'white' ? 'red' : 'white');
     };
     const deleteOrder = async () => {
-      const response = await fetch(`http://192.168.43.4:8000/api/orders/${id}/`, {
+      const response = await fetch(`https://funfood.vercel.app/api/orders/${id}/`, {
         method: 'DELETE',
         // headers: {
         //   'Content-Type': 'application/json',

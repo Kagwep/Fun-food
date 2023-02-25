@@ -32,7 +32,7 @@ const WishItem = ({
       console.log(formData)
     
     
-      const response = await fetch('http://192.168.43.4:8000/api/orders/', {
+      const response = await fetch('https://funfood.vercel.app/api/orders/', {
         method: 'POST',
     
         body: formData,
@@ -75,7 +75,7 @@ const WishItem = ({
     }
 
     const deleteWish = async () => {
-      const response = await fetch(`http://192.168.43.4:8000/api/wishlist/${id}/`, {
+      const response = await fetch(`https://funfood.vercel.app/api/wishlist/${id}/`, {
         method: 'DELETE',
         // headers: {
         //   'Content-Type': 'application/json',
