@@ -37,7 +37,7 @@ const DrinkList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
 
         let url = 'https://funfood.vercel.app/api/drinks/';
         if (category) {
-          url += `?category=${category}`;
+          url += `?drink_category=${category}`;
         }
         if (search) {
           url += `?search=${search}`;

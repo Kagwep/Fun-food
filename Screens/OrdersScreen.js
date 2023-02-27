@@ -48,6 +48,7 @@ const OrdersScreen = () => {
          
           <TouchableOpacity
           style={style.ord}
+          onPress={() => navigation.navigate("Checkout")}
           >
           <Text style={style.checkText}> Place Order</Text>
           <Ionicons name="arrow-forward-circle" size={24} color={'#FFC000'} />

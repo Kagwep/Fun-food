@@ -21,9 +21,20 @@ const DrinkItem = ({
       const newItem = { id,name,image, category,price };
     
       setUnorders([...unOrders, newItem]);
+
     
       e.preventDefault();
       try {
+
+     // Get the token from async storage
+      const token = await AsyncStorage.getItem('token');
+  
+      if (!token) {
+        // redirect the user to the login form
+        console.log('no token');
+        
+      }
+      
       const formData = new FormData();
     
       formData.append('item_id',id);
@@ -85,7 +96,7 @@ const DrinkItem = ({
     
     
       e.preventDefault();
-      
+
       try {
               // Get the token from async storage
       const token = await AsyncStorage.getItem('token');
@@ -93,6 +104,7 @@ const DrinkItem = ({
       if (!token) {
         // redirect the user to the login form
         console.log('no token');
+
       }
 
       const formData = new FormData();

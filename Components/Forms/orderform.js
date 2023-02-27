@@ -1,14 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState,useLayoutEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {HeaderBackButton} from "@react-navigation/elements";
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 const OrderForm = () => {
+
+
   const [food, setFood] = useState('');
   const [drink, setDrink] = useState('');
   const [fruit, setFruit] = useState('');
 
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+      navigation.setOptions({
+        headerTitle:"Checkout",
+        headerLeft: () => (
+          <HeaderBackButton 
+            tintColor='white'
+            onPress={() => navigation.goBack()}
+          
+          />
+        )
+      })
+     },[])
+
   const handleOrder = async () => {
     try {
-      const response = await fetch('https://example.com/api/orders/', {
+      const response = await fetch('https://funfood.vercel.app/api/orders-checkout/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -28,7 +48,7 @@ const OrderForm = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Order Form</Text>
+      <Text style={styles.title}>Order CheckOut</Text>
       <TextInput
         value={food}
         onChangeText={setFood}

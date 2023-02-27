@@ -51,7 +51,7 @@ const style = StyleSheet.create({
         justifyContent: "center",
         paddingHorizontal: 3,
         marginBottom:10,
-        borderRadius:10
+        borderRadius:10.
 
         
       },

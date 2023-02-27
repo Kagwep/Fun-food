@@ -12,6 +12,7 @@ import HomeFruitsList from '../Components/Home/HomeFruitsList';
 import HomeDrinksList from '../Components/Home/HomeDrinksList';
 
 
+
 const HEADER_HEIGHT = 250;
 
 const HEADER_MAX_HEIGHT = 350;

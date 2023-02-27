@@ -23,6 +23,10 @@ import FoodScreen from '../Screens/FoodScreen';
 import DrinkScreen from '../Screens/DrinksScreen';
 import FruitsScreen from '../Screens/FoodScreen';
 import NewFruitsScreen from '../Screens/NewFruitScreen';
+import Login from '../Components/Forms/LogInForm';
+import UserRegistration from '../Components/Forms/RegisterForm';
+import OrderForm from '../Components/Forms/orderform';
+
 
 const Stack = createStackNavigator();
 
@@ -44,6 +48,11 @@ export const HomeStack =() => {
     
       <Stack.Screen name="Drinks" component={DrinkScreen} />
       <Stack.Screen name="Juices & Fruits" component={NewFruitsScreen} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Register" component={UserRegistration} />
+      <Stack.Screen name="Checkout" component={OrderForm} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+      
 
       {/* <Stack.Screen name="MarketProductForm" component={MarketProductForm} />
       <Stack.Screen name="ShopProductForm" component={ShopProductForm} />

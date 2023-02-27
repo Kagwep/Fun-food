@@ -1,5 +1,5 @@
 import React, { useState,useLayoutEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet,TouchableOpacity,Image,ImageBackground,Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {HeaderBackButton} from "@react-navigation/elements";
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -25,6 +25,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [token, setToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
+  const [user, setUser] = useState('');
 
   const handleLogin = () => {
       // Validate the form fields
@@ -49,11 +50,13 @@ const Login = () => {
       // If the request is successful, set the token and refresh token in the app
       setToken(data.access);
       setRefreshToken(data.refresh);
+      setUser(data.user);
       // Store the token and refresh token in AsyncStorage
+      const myuser = JSON.stringify(data.user);
       AsyncStorage.setItem('token', data.access);
       AsyncStorage.setItem('refresh_token', data.refresh);
-      AsyncStorage.setItem('user',data.user)
-      navigation.navigate('Home');
+      AsyncStorage.setItem('user',myuser)
+      navigation.navigate('ProfileTab');
 
     })
     .catch(error => {
@@ -65,7 +68,7 @@ const Login = () => {
 
   const handleRefresh = () => {
     // Make a POST request to the TokenRefreshViewSet to obtain a new token
-    fetch('http://localhost:8000/api/tokens/refresh/', {
+    fetch('https://funfood.vercel.app/api/tokens/refresh/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -90,13 +93,21 @@ const Login = () => {
   }
 
   console.log(token)
+  console.log(user)
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Log In</Text>
+    <View style={styles.containers}>
+      <ImageBackground
+            style={[styles.fixed, styles.containter]}
+            source={
+              require('./funfood.webp')
+            }
+      />
+    <View style={[styles.fixed, styles.scrollview]}>
+      <Image style={styles.tinyLogo} source={require('./login.png')} />
       <TextInput
-        value={phone}
-        onChangeText={setPhone}
+        value={phoneNumber}
+        onChangeText={setPhoneNumber}
         placeholder="Phone number"
         style={styles.input}
         keyboardType="numeric"
@@ -108,16 +119,28 @@ const Login = () => {
         style={styles.input}
         secureTextEntry={true}
       />
-      <Button title="Log in" onPress={handleLogin} style={styles.button} />
+      <TouchableOpacity
+      onPress={handleLogin}
+      style={styles.login}
+      >
+        <Text style={styles.logintext}> Log In</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+       onPress={() => navigation.navigate("Register")}
+       style={styles.register}
+      >
+        <Text style={styles.registertext}>Register</Text>
+      </TouchableOpacity>
+
     </View>
+    </View>
+
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  containers: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#fff',
     padding: 20,
   },
@@ -128,17 +151,62 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    width: '100%',
+    width: '80%',
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 4,
     paddingHorizontal: 10,
     marginBottom: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)'
   },
   button: {
     marginTop: 20,
     borderRadius: 4,
   },
+  login:{
+    paddingHorizontal:20,
+    paddingVertical:10,
+    borderRadius:10,
+    marginTop:10,
+    backgroundColor:"#D2B04C",
+  },
+  register:{
+    marginTop:10,
+    padding:10,
+    borderRadius:10,
+  },
+  logintext:{
+    fontSize:15,
+    color:'#ffffff',
+    textAlign:'center'
+  },
+  registertext:{
+    fontSize:15,
+    color:'rgb(0,0,255)',
+    fontSize:18,
+  },
+  tinyLogo: {
+    width: '100%',
+    height: 200,
+    
+  },
+  containter: {
+    width: Dimensions.get("window").width, //for full screen
+    height: Dimensions.get("window").height //for full screen
+  },
+  fixed: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    
+  },
+ scrollview: {
+   backgroundColor: 'rgba(255, 255, 255, 0.5)'
+ }
 });
 
 export default Login;

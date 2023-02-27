@@ -13,6 +13,7 @@ const DrinkCatgoryList = ({setCategory}) => {
     const [drink_categories, setDrinkCategories] = useState([]);
 
     const [catId,setCatId] = useState(1);
+    
     useEffect(() => {
         const fetchDrinkCategories = async () => {
           const response = await fetch('https://funfood.vercel.app/api/drink_categories/');

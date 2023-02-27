@@ -36,7 +36,15 @@ const DrinkScreen = () => {
   return (
     <View >
     <DrinksSearch />
-    <DrinkCatgoryList />
+    <DrinkCatgoryList setCategory={setCategory}/>
+    {category && (
+        <TouchableOpacity
+        style={styles.catbac}
+        onPress={() => setCategory(null)}
+        >
+          <Text style={styles.catbactext}>Back to All Categories</Text>
+        </TouchableOpacity>
+      )}
     <DrinkList
          loading={loading}
          category={category}
