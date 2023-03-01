@@ -2,6 +2,10 @@ import React , { useState } from 'react'
 import { TouchableOpacity,Text,StyleSheet, View,Image,Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { addOrder } from './OrdersReducer';
+import { useDispatch } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { addWish } from './WishReducer';
 
 const FoodItem = ({
   id,name,description,
@@ -11,6 +15,7 @@ const FoodItem = ({
     const navigation = useNavigation();
     const [color, setColor] = useState('white');
     const [unOrders, setUnorders] = useState([]);
+    const dispatch = useDispatch();
 
     const handlePress = () => {
       setColor(color === 'white' ? 'red' : 'white');
@@ -19,11 +24,25 @@ const FoodItem = ({
 const handleSubmit = async(e) => {
 
   const newItem = { id,name,image, category,price };
+  const order = { id, category, name,image, description, price };
 
   setUnorders([...unOrders, newItem]);
 
   e.preventDefault();
   try {
+
+  // Get the token from async storage
+  const token = await AsyncStorage.getItem('token');
+
+  if (!token) {
+    // redirect the user to the login form
+    console.log('no token');
+
+    dispatch(addOrder(order));
+    
+    
+  }
+
   const formData = new FormData();
 
   formData.append('item_id',id);
@@ -82,10 +101,21 @@ const handleSubmitWish = async(e) => {
 
 
   const newItem = { id, category };
-
+  const wish = { id, category, name,image, description, price };
 
   e.preventDefault();
   try {
+
+
+    if (!token) {
+      // redirect the user to the login form
+      console.log('no token');
+  
+      dispatch(addWish(wish));
+      
+      
+    }
+
   const formData = new FormData();
 
   formData.append('item_id',id);

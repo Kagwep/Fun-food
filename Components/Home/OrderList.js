@@ -4,7 +4,8 @@ import { RefreshControl } from 'react-native-gesture-handler';
 // import { Dummy_Data } from '../../Data/dummy';
 import OrderItem from './OrderItem';
 import  { useState, useEffect } from 'react';
-
+import { useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 
 const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
 
@@ -16,6 +17,7 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
       // };
 
       const [orders, setOrders] = useState([]);
+      const unorders = useSelector(state => state.orders);
 
     const renderItem = ({item}) => {
         return <OrderItem
@@ -47,10 +49,20 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
       }
       
 
-    useEffect(() => {
-      fetchProducts();
-    }, [category, order,search]);
+    // useEffect(() => {
+    //   fetchProducts();
+    // }, [category, order,search]);
 
+
+    useFocusEffect(
+      React.useCallback(() => {
+        let isActive = true;
+        fetchProducts();
+        return () => {
+          isActive = false;
+        };
+      }, [category, order,search])
+    );
     // if (loading) return <ActivityIndicator size='large' marginVertical={30} />
    
 
@@ -64,6 +76,7 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
         </View>
       );
     };
+    console.log("this",unorders)
 
   return (
     <View style={style.orderlist}>

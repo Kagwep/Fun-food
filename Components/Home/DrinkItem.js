@@ -3,6 +3,9 @@ import { TouchableOpacity,Text,StyleSheet, View,Image,Alert } from 'react-native
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { addOrder } from './OrdersReducer';
+import { useDispatch } from 'react-redux';
+import { addWish } from './WishReducer';
 
 const DrinkItem = ({
   id,name,description,
@@ -12,6 +15,7 @@ const DrinkItem = ({
     const navigation = useNavigation();
     const [color, setColor] = useState('white');
     const [unOrders, setUnorders] = useState([]);
+    const dispatch = useDispatch();
 
     const handlePress = () => {
       setColor(color === 'white' ? 'red' : 'white');
@@ -19,6 +23,13 @@ const DrinkItem = ({
     const handleSubmit = async(e) => {
 
       const newItem = { id,name,image, category,price };
+      const order = { id,     item_details: {
+        "category": category,
+        "description": description,
+        "image": image,
+        "name": name,
+        "price": price,
+      } };
     
       setUnorders([...unOrders, newItem]);
 
@@ -32,6 +43,9 @@ const DrinkItem = ({
       if (!token) {
         // redirect the user to the login form
         console.log('no token');
+
+        dispatch(addOrder(order));
+        
         
       }
       
@@ -93,7 +107,7 @@ const DrinkItem = ({
     
     
       const newItem = { id, category };
-    
+      const wish = { id, category, name,image, description, price };
     
       e.preventDefault();
 
@@ -104,6 +118,7 @@ const DrinkItem = ({
       if (!token) {
         // redirect the user to the login form
         console.log('no token');
+        dispatch(addWish(wish));
 
       }
 
