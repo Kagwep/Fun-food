@@ -24,7 +24,13 @@ const FruitsItem = ({
     const handleSubmit = async(e) => {
 
       const newItem = { id,name,image, category,price };
-      const order = { id, category, name,image, description, price };
+      const order = { id,item_details: {
+        "category": category,
+        "description": description,
+        "image": image,
+        "name": name,
+        "price": price,
+      } };
     
       setUnorders([...unOrders, newItem]);
     
@@ -43,7 +49,10 @@ const FruitsItem = ({
     dispatch(addOrder(order));
     
     
-  }
+  }else{
+
+      const user = await AsyncStorage.getItem('user');
+      const myUser = JSON.parse(user);
 
       const formData = new FormData();
     
@@ -86,7 +95,7 @@ const FruitsItem = ({
       } else {
         // There was an error with the request
         console.log('Error:', response.statusText);
-      }
+      }}
     } catch (error) {
     
       // if (error.response.status === 401) {
@@ -103,12 +112,19 @@ const FruitsItem = ({
     
     
       const newItem = { id, category };
-      const wish = { id, category, name,image, description, price };
+      const wish = { id,item_details: {
+        "category": category,
+        "description": description,
+        "image": image,
+        "name": name,
+        "price": price,
+      } };
     
     
       e.preventDefault();
       try {
-
+        
+        const token = await AsyncStorage.getItem('token');
           
         if (!token) {
           // redirect the user to the login form
@@ -117,7 +133,10 @@ const FruitsItem = ({
           dispatch(addWish(wish));
           
           
-        }
+        } else {
+
+      const user = await AsyncStorage.getItem('user');
+      const myUser = JSON.parse(user);
 
       const formData = new FormData();
     
@@ -140,7 +159,7 @@ const FruitsItem = ({
       } else {
         // There was an error with the request
         console.log('Error:', response.statusText);
-      }
+      }}
     } catch (error) {
     
       // if (error.response.status === 401) {

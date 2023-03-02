@@ -23,7 +23,7 @@ const DrinkItem = ({
     const handleSubmit = async(e) => {
 
       const newItem = { id,name,image, category,price };
-      const order = { id,     item_details: {
+      const order = { id,item_details: {
         "category": category,
         "description": description,
         "image": image,
@@ -47,7 +47,10 @@ const DrinkItem = ({
         dispatch(addOrder(order));
         
         
-      }
+      }else{
+
+      const user = await AsyncStorage.getItem('user');
+      const myUser = JSON.parse(user);
       
       const formData = new FormData();
     
@@ -90,7 +93,7 @@ const DrinkItem = ({
       } else {
         // There was an error with the request
         console.log('Error:', response.statusText);
-      }
+      }}
     } catch (error) {
     
       // if (error.response.status === 401) {
@@ -107,7 +110,13 @@ const DrinkItem = ({
     
     
       const newItem = { id, category };
-      const wish = { id, category, name,image, description, price };
+      const wish = { id,item_details: {
+        "category": category,
+        "description": description,
+        "image": image,
+        "name": name,
+        "price": price,
+      }};
     
       e.preventDefault();
 
@@ -120,7 +129,10 @@ const DrinkItem = ({
         console.log('no token');
         dispatch(addWish(wish));
 
-      }
+      } else {
+
+      const user = await AsyncStorage.getItem('user');
+      const myUser = JSON.parse(user);
 
       const formData = new FormData();
     
@@ -143,7 +155,7 @@ const DrinkItem = ({
       } else {
         // There was an error with the request
         console.log('Error:', response.statusText);
-      }
+      }}
     } catch (error) {
     
       // if (error.response.status === 401) {

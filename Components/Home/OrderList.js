@@ -6,6 +6,7 @@ import OrderItem from './OrderItem';
 import  { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
 
@@ -56,8 +57,16 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
 
     useFocusEffect(
       React.useCallback(() => {
+        AsyncStorage.getItem('token')
+        .then(token => {
+          // If the token exists, fetch the products
+          fetchProducts();
+        })
+        .catch(error => {
+          // If the token does not exist, set the shouldFetchProducts state variable to true
+          setOrders(unorders);
+        });
         let isActive = true;
-        fetchProducts();
         return () => {
           isActive = false;
         };
