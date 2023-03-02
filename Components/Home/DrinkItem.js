@@ -6,6 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addOrder } from './OrdersReducer';
 import { useDispatch } from 'react-redux';
 import { addWish } from './WishReducer';
+import { v4 as uuidv4 } from 'uuid';
+import uuid from "uuid";
 
 const DrinkItem = ({
   id,name,description,
@@ -22,8 +24,11 @@ const DrinkItem = ({
     };
     const handleSubmit = async(e) => {
 
+      const ids = uuid();
+
+
       const newItem = { id,name,image, category,price };
-      const order = { id,item_details: {
+      const order = { id:ids,item_details: {
         "category": category,
         "description": description,
         "image": image,
@@ -45,6 +50,18 @@ const DrinkItem = ({
         console.log('no token');
 
         dispatch(addOrder(order));
+
+        Alert.alert(
+          name,
+          'Order placed successfully!',
+          [
+            {
+              text: 'OK',
+              onPress: () => console.log('OK Pressed')
+            }
+          ],
+          { cancelable: false }
+        );
         
         
       }else{
@@ -107,10 +124,12 @@ const DrinkItem = ({
     }
     
     const handleSubmitWish = async(e) => {
+
+      const ids = uuid();
     
     
       const newItem = { id, category };
-      const wish = { id,item_details: {
+      const wish = { id:ids,item_details: {
         "category": category,
         "description": description,
         "image": image,
@@ -128,6 +147,7 @@ const DrinkItem = ({
         // redirect the user to the login form
         console.log('no token');
         dispatch(addWish(wish));
+        setColor(color === 'white' ? 'red' : 'white');
 
       } else {
 
@@ -149,6 +169,7 @@ const DrinkItem = ({
       if (response.ok) {
         // Form was successfully submitted
         console.log('item added to wishlist successfully');
+        
         setColor(color === 'white' ? 'red' : 'white');
         
     

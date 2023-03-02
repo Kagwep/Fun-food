@@ -6,6 +6,7 @@ import { addOrder } from './OrdersReducer';
 import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addWish } from './WishReducer';
+import uuid from "uuid";
 
 const FoodItem = ({
   id,name,description,
@@ -23,8 +24,10 @@ const FoodItem = ({
 
 const handleSubmit = async(e) => {
 
+  const ids = uuid();
+
   const newItem = { id,name,image, category,price };
-  const order = { id,item_details: {
+  const order = { id:ids,item_details: {
     "category": category,
     "description": description,
     "image": image,
@@ -46,6 +49,17 @@ const handleSubmit = async(e) => {
 
     dispatch(addOrder(order));
     
+    Alert.alert(
+      name,
+      'Order placed successfully!',
+      [
+        {
+          text: 'OK',
+          onPress: () => console.log('OK Pressed')
+        }
+      ],
+      { cancelable: false }
+    );
     
   }else {
 
@@ -108,9 +122,11 @@ const handleSubmit = async(e) => {
 
 const handleSubmitWish = async(e) => {
 
+  const ids = uuid();
+
 
   const newItem = { id, category };
-  const wish = { id,item_details: {
+  const wish = { id:ids,item_details: {
     "category": category,
     "description": description,
     "image": image,
@@ -128,6 +144,8 @@ const handleSubmitWish = async(e) => {
       console.log('no token');
   
       dispatch(addWish(wish));
+
+      setColor(color === 'white' ? 'red' : 'white');
       
       
     } else{

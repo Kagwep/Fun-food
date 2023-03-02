@@ -2,18 +2,51 @@ import React , { useState } from 'react'
 import { TouchableOpacity,Text,StyleSheet, View,Image ,Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { removeOrder } from './OrdersReducer';
+import { useDispatch } from 'react-redux';
 
 const OrderItem = ({
   id,item_details,setOrders
 }) => {
     const navigation = useNavigation();
     const [color, setColor] = useState('white');
+    
+
+    const dispatch = useDispatch();
 
     const handlePress = () => {
       setColor(color === 'white' ? 'red' : 'white');
     };
     const deleteOrder = async () => {
+      try {
+          // Get the token from async storage
+  const token = await AsyncStorage.getItem('token');
+
+  if (!token) {
+    // redirect the user to the login form
+    console.log('no token');
+
+    setOrders(prevOrders => prevOrders.filter(order => order.id !== id));
+    
+    dispatch(removeOrder(id));
+    
+   
+
+    Alert.alert(
+      item_details.name,
+      'Order deleted successfully!',
+      [
+        {
+          text: 'OK',
+          onPress: () => console.log('OK Pressed')
+        }
+      ],
+      { cancelable: false }
+    );
+    
+    
+  } else{
       const response = await fetch(`https://funfood.vercel.app/api/orders/${id}/`, {
         method: 'DELETE',
         // headers: {
@@ -36,7 +69,12 @@ const OrderItem = ({
         );
       } else {
         Alert.alert('Error', 'Failed to delete order');
+      }}}catch (error) {
+    
+        console.error(error);
       }
+
+
     }
   return (
     <View style={[style.container, style.shadowProp]}>

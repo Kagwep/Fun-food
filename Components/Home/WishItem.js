@@ -2,13 +2,21 @@ import React , { useState } from 'react'
 import { TouchableOpacity,Text,StyleSheet, View,Image,Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { removeWish } from './WishReducer';
+import { useDispatch } from 'react-redux';
+import { addOrder } from './OrdersReducer';
+import uuid from "uuid";
 
 const WishItem = ({
   id,item_details,item_id,setWishes,category
 }) => {
+
+
+
     const navigation = useNavigation();
     const [color, setColor] = useState('white');
+    const dispatch = useDispatch();
 
     const handlePress = () => {
       setColor(color === 'white' ? 'red' : 'white');
@@ -16,8 +24,33 @@ const WishItem = ({
 
     const handleSubmit = async(e) => {
 
+      const ids = uuid();
+
+      const order = { id:ids,item_details: item_details };
+
       e.preventDefault();
       try {
+
+        if (!token) {
+          // redirect the user to the login form
+          console.log('no token');
+      
+          dispatch(addOrder(order));
+      
+          Alert.alert(
+            item_details.name,
+            'Order placed successfully!',
+            [
+              {
+                text: 'OK',
+                onPress: () => console.log('OK Pressed')
+              }
+            ],
+            { cancelable: false }
+          );
+          
+          
+        }else{
       const formData = new FormData();
     
       formData.append('item_id',item_details.id);
@@ -62,7 +95,7 @@ const WishItem = ({
         // There was an error with the request
         console.log('Error:', response.statusText);
       }
-    } catch (error) {
+    } }catch (error) {
     
       // if (error.response.status === 401) {
       //   // redirect the user to the login form
@@ -75,6 +108,36 @@ const WishItem = ({
     }
 
     const deleteWish = async () => {
+
+      try {
+
+                  // Get the token from async storage
+  const token = await AsyncStorage.getItem('token');
+
+  if (!token) {
+    // redirect the user to the login form
+    console.log('no token');
+
+    setOrders(prevOrders => prevOrders.filter(order => order.id !== id));
+    
+    dispatch(removeWish(id));
+    
+   
+
+    Alert.alert(
+      item_details.name,
+      'Wish deleted successfully!',
+      [
+        {
+          text: 'OK',
+          onPress: () => console.log('OK Pressed')
+        }
+      ],
+      { cancelable: false }
+    );
+    
+    
+  } else{
       const response = await fetch(`https://funfood.vercel.app/api/wishlist/${id}/`, {
         method: 'DELETE',
         // headers: {
@@ -97,6 +160,9 @@ const WishItem = ({
         );
       } else {
         Alert.alert('Error', 'Failed to delete order');
+      }}}catch (error) {
+    
+        console.error(error);
       }
     }
   return (

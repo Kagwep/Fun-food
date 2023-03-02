@@ -19,6 +19,11 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
 
       const [orders, setOrders] = useState([]);
       const unorders = useSelector(state => state.orders);
+    
+    const fetchOrders = () => {
+      
+      
+    }
 
     const renderItem = ({item}) => {
         return <OrderItem
@@ -57,21 +62,32 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
 
     useFocusEffect(
       React.useCallback(() => {
+        
+     
         AsyncStorage.getItem('token')
         .then(token => {
           // If the token exists, fetch the products
-          fetchProducts();
+          if (token) {
+            console.log(token);
+            fetchProducts();
+          } else {
+            // If the token does not exist, set the orders state variable to the default value
+            setOrders(unorders.orders);
+            // console.log("c")
+          }
         })
         .catch(error => {
-          // If the token does not exist, set the shouldFetchProducts state variable to true
-          setOrders(unorders);
+          // If there is an error, set the orders state variable to the default value
+          console.log(error)
+          // setOrders(unorders.orders);
         });
         let isActive = true;
         return () => {
           isActive = false;
         };
-      }, [category, order,search])
+      }, [category, order, search,unorders])
     );
+    
     // if (loading) return <ActivityIndicator size='large' marginVertical={30} />
    
 
@@ -85,7 +101,7 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
         </View>
       );
     };
-    console.log("this",unorders)
+  
 
   return (
     <View style={style.orderlist}>

@@ -4,6 +4,9 @@ import { RefreshControl } from 'react-native-gesture-handler';
 // import { Dummy_Data } from '../../Data/dummy';
 import WishItem from './WishItem';
 import  { useState, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
@@ -28,6 +31,7 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
     }
 
     const [wishes, setWishes] = useState([]);
+    const unwishes = useSelector(state => state.wishes);
 
   
       const fetchProducts = async () => {
@@ -48,12 +52,38 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
       }
       
 
-    useEffect(() => {
-      fetchProducts();
-    }, [category, order,search]);
+    // useEffect(() => {
+    //   fetchProducts();
+    // }, [category, order,search]);
 
     // if (loading) return <ActivityIndicator size='large' marginVertical={30} />
-   
+    useFocusEffect(
+      React.useCallback(() => {
+        
+     
+        AsyncStorage.getItem('token')
+        .then(token => {
+          // If the token exists, fetch the products
+          if (token) {
+            console.log(token);
+            fetchProducts();
+          } else {
+            // If the token does not exist, set the orders state variable to the default value
+            setWishes(unwishes.wishes);
+            // console.log("c")
+          }
+        })
+        .catch(error => {
+          // If there is an error, set the orders state variable to the default value
+          console.log(error)
+          // setOrders(unorders.orders);
+        });
+        let isActive = true;
+        return () => {
+          isActive = false;
+        };
+      }, [category, order, search,unwishes])
+    );
 
     console.log(wishes)
     console.log(category,"dfsgdfjkl")
