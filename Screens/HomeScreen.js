@@ -204,6 +204,12 @@ const HomeScreen = () => {
 
         <View style={style.foodheader}>
         <Text style={style.foodtext}> Delicious Food </Text>
+        <TouchableOpacity
+        style={style.seall}
+        onPress={() => navigation.navigate('Foods')}
+        >
+         <Text style={style.sealltext}> See All</Text>
+        </TouchableOpacity>
         </View>
 
        
@@ -227,7 +233,13 @@ const HomeScreen = () => {
       <View style={style.fruit}>
 
       <View style={style.fruitheader}>
-           <Text style={style.fruittext}> Juicy ! Succulent ! Refreshing, and Flavorful </Text>
+           <Text style={style.fruittext}> Juicy  and Flavorful </Text>
+           <TouchableOpacity
+        style={style.seall}
+        onPress={() => navigation.navigate('Juices & Fruits')}
+        >
+         <Text style={style.sealltext}> See All</Text>
+        </TouchableOpacity>
 
       </View>
    
@@ -245,7 +257,13 @@ const HomeScreen = () => {
 
       <View style={style.drink}>
         <View style={style.drinkheader}>
-        <Text style={style.drinktext}> Find your perfect drink and savor the moment </Text>
+        <Text style={style.drinktext}> Find your perfect drink</Text>
+        <TouchableOpacity
+        style={style.seall}
+        onPress={() => navigation.navigate('Drinks')}
+        >
+         <Text style={style.sealltext}> See All</Text>
+        </TouchableOpacity>
         </View>
       
 
@@ -352,12 +370,18 @@ const style = StyleSheet.create({
       backgroundColor:'#FFFFFF',
       borderTopStartRadius:10,
       borderTopEndRadius:10,
+      justifyContent:'space-between',
+      flexDirection:'row',
+      paddingHorizontal:10,
       
     },
     fruitheader:{
       backgroundColor:'#FFFFFF',
       borderTopStartRadius:10,
       borderTopEndRadius:10,
+      justifyContent:'space-between',
+      flexDirection:'row',
+      paddingHorizontal:10,
     },
 
     catbac:{
@@ -422,6 +446,9 @@ const style = StyleSheet.create({
       backgroundColor:'#FFFFFF',
       borderTopStartRadius:10,
       borderTopEndRadius:10,
+      justifyContent:'space-between',
+      flexDirection:'row',
+      paddingHorizontal:10,
     },
     containter: {
       width: Dimensions.get("window").width, //for full screen
@@ -436,7 +463,16 @@ const style = StyleSheet.create({
     },
    scrollview: {
      backgroundColor: 'transparent'
-   }
+   },
+   seall:{
+    padding:5,
+   },
+   sealltext:{
+    textAlign:'center',
+    fontSize:16,
+    fontWeight:'bold',
+    color:'orange'
+   },
 
 })
 

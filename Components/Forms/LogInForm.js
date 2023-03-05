@@ -35,7 +35,7 @@ const Login = () => {
         return;
     } 
     // Make a POST request to the TokenViewSet to obtain a token
-    fetch('http://192.168.43.4:8000/api/tokens/', {
+    fetch('https://funfood.vercel.app/api/tokens/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -4,7 +4,8 @@ import { useNavigation , useRoute} from '@react-navigation/native';
 import FruitsList from '../Components/Home/FruitsList';
 import {HeaderBackButton} from "@react-navigation/elements";
 import FruitsSearch from '../Components/Stand/FruitsSearch';
-
+import FruitCatgoryList from '../Components/Categories/FruitCategoryList';
+import PriceCatgoryList from '../Components/Categories/PriceCategoryList';
 
 const NewFruitsScreen = () => {
 
@@ -16,6 +17,7 @@ const NewFruitsScreen = () => {
     const [filter, setFilter] = useState({ price: '', product_name: '' });
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState('');
+    const [priceCategory, setPriceCategory] = useState('');
 
 
     useLayoutEffect(() => {
@@ -34,12 +36,32 @@ const NewFruitsScreen = () => {
   return (
     <View >
     <FruitsSearch />
+    <FruitCatgoryList setCategory={setCategory}/>
+    {category && (
+        <>
+        <TouchableOpacity
+        style={styles.catbac}
+        onPress={() => {
+          setCategory(null);
+          setSearch(null);
+        }}
+        
+        >
+
+          <Ionicons name="arrow-back-circle" size={24} color="black" />
+          <Text style={styles.catbactext}>Back to All Categories</Text>
+
+        </TouchableOpacity>
+        <PriceCatgoryList setPriceCategory={setPriceCategory} />
+        </>
+      )}
     <FruitsList
          loading={loading}
          category={category}
          order={order}
          search ={search}
          filter={filter}
+         priceCategory={priceCategory}
     
     />
     
@@ -50,9 +72,18 @@ const NewFruitsScreen = () => {
 
 
 const styles = StyleSheet.create({
-    screen:{
-
-    },
+  screen:{
+    flex:1
+  },
+  catbac:{
+    flexDirection:'row',
+    paddingBottom:10,
+    marginLeft:20
+  },
+  catbactext:{
+    paddingTop:5
+    
+  },
 })
 
 export default NewFruitsScreen

@@ -87,6 +87,7 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
 
     console.log(wishes)
     console.log(category,"dfsgdfjkl")
+    console.log("rt",unwishes)
 
     const renderFooter = () => {
       return (

@@ -4,7 +4,8 @@ import { wishesReducer } from './WishReducer';
 
 const store = configureStore({
   reducer: {
-    orders: ordersReducer
+    orders: ordersReducer,
+    wishes:wishesReducer
   }
 });
 

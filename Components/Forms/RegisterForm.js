@@ -2,12 +2,22 @@ import React, { useState ,useLayoutEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity,ImageBackground,Dimensions,Image,Alert } from 'react-native';
 import { useNavigation , useRoute} from '@react-navigation/native';
 import {HeaderBackButton} from "@react-navigation/elements";
+import MapView, { Marker } from 'react-native-maps';
 
 export default function UserRegistration() {
   const [fullNames, setFullNames] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [location, setLocation] = useState('');
   const [password, setPassword] = useState('');
+
+  const [mapLocation, setMapLocation] = useState({
+    latitude: defaultLatitude,
+    longitude: defaultLongitude,
+  });
+
+  const defaultLatitude = 37.78825;
+  const defaultLongitude = -122.4324;
+
 
   const navigation = useNavigation();
 
@@ -32,7 +42,7 @@ export default function UserRegistration() {
       password: password,
     };
 
-    fetch('http://192.168.43.4:8000/api/users/', {
+    fetch('https://funfood.vercel.app/api/users/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -111,6 +121,22 @@ export default function UserRegistration() {
         value={password}
         secureTextEntry={true}
       />
+
+<MapView
+        style={styles.map}
+        initialRegion={{
+          latitude: defaultLatitude,
+          longitude: defaultLongitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+        onPress={event => setMapLocation(event.nativeEvent.coordinate)}
+      >
+        <Marker coordinate={mapLocation} />
+      </MapView>
+      <Text style={styles.locationText}>
+        Latitude: {location.latitude.toFixed(4)}, Longitude: {location.longitude.toFixed(4)}
+      </Text>
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Register</Text>

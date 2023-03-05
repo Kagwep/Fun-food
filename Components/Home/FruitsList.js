@@ -6,7 +6,7 @@ import FruitsItem from './FruitsItem';
 import  { useState, useEffect } from 'react';
 
 
-const FruitsList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
+const FruitsList = ({contentInset,contentOffset,priceCategory,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
 
       // const [scrollY, setScrollY] = useState(0);
 
@@ -34,12 +34,20 @@ const FruitsList = ({contentInset,contentOffset,contentContainerStyle,bounces,on
       const fetchProducts = async () => {
 
         let url = 'https://funfood.vercel.app/api/fruits/';
-        if (category) {
-          url += `?category=${category}`;
-        }
-        if (search) {
+
+        if (search && !category) {
           url += `?search=${search}`;
+        } else if (category && !search) {
+          url += `?in_category=${category}`;
+        } else if (category && search) {
+          url += `?drink_category=${category}&search=${search}`;
+          // setSearch(null);
         }
+        else if (category && priceCategory) {
+          url += `?drink_category=${category}&price_category=${priceCategory}`;
+          // setSearch(null);
+        }
+
         if (order.name) {
           url += `?ordering=${order.name}`;
         }

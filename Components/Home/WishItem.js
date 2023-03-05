@@ -118,7 +118,7 @@ const WishItem = ({
     // redirect the user to the login form
     console.log('no token');
 
-    setOrders(prevOrders => prevOrders.filter(order => order.id !== id));
+    setWishes(prevWishes => prevWishes.filter(wish => wish.id !== id));
     
     dispatch(removeWish(id));
     

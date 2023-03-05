@@ -7,7 +7,7 @@ import  { useState, useEffect } from 'react';
 
 
 
-const DrinkList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
+const DrinkList = ({contentInset,setSearch,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
 
       // const [scrollY, setScrollY] = useState(0);
 
@@ -36,15 +36,24 @@ const DrinkList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
       const fetchProducts = async () => {
 
         let url = 'https://funfood.vercel.app/api/drinks/';
-        if (category) {
-          url += `?drink_category=${category}`;
-        }
-        if (search) {
+
+        if (search && !category) {
           url += `?search=${search}`;
+        } else if (category && !search) {
+          url += `?drink_category=${category}`;
+        } else if (category && search) {
+          url += `?drink_category=${category}&search=${search}`;
+          // setSearch(null);
         }
+        
         if (order.name) {
-          url += `?ordering=${order.name}`;
+          if (url.includes('?')) {
+            url += `&ordering=${order.name}`;
+          } else {
+            url += `?ordering=${order.name}`;
+          }
         }
+
         const response = await fetch(url);
         const data = await response.json();
         setProducts(data);

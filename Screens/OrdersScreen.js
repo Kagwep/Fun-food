@@ -9,7 +9,6 @@ import { Ionicons } from '@expo/vector-icons';
 
 const OrdersScreen = () => {
 
- 
   const route =  useRoute();
   const navigation = useNavigation();
 

@@ -17,6 +17,7 @@ const FruitsItem = ({
     const [color, setColor] = useState('white');
     const [unOrders, setUnorders] = useState([]);
     const dispatch = useDispatch();
+    const[orderCount, setOrderCount]  = useState(1)
 
     const handlePress = () => {
       setColor(color === 'white' ? 'red' : 'white');
@@ -73,11 +74,12 @@ const FruitsItem = ({
       formData.append('item_id',id);
       formData.append('category',category);
     
-      const delivery_location = 'Nakuru';
-      const order_quantity = 2;
+      const order_count = orderCount;
+      const order_price = order_count*price;
     
-      formData.append('order_quantity',order_quantity);
-      formData.append('delivery_location',delivery_location);
+      formData.append('order_count',order_count);
+      formData.append('order_price',order_price);
+      formData.append('order_made_by',myUser.id)
     
       console.log(formData)
       const response = await fetch('https://funfood.vercel.app/api/orders/', {
@@ -147,6 +149,7 @@ const FruitsItem = ({
           console.log('no token');
       
           dispatch(addWish(wish));
+          setColor(color === 'white' ? 'red' : 'white');
           
           
         } else {
@@ -188,6 +191,28 @@ const FruitsItem = ({
     
     }
 
+    const addOrderCount = () =>{
+      const current = orderCount;
+      const newCurrent = current + 1 ;
+
+      setOrderCount(newCurrent)
+
+    }
+
+    const removeOrderCount = () =>{
+
+      const current = orderCount;
+
+      if (current > 1){
+        const newCurrent = current - 1 ;
+        setOrderCount(newCurrent)
+      }
+      
+
+      
+      
+    }
+
   return (
     <View style={style.container}>
         <TouchableOpacity
@@ -217,13 +242,15 @@ const FruitsItem = ({
               <View style={style.car}>
                 <TouchableOpacity
                 style={style.ca}
+                onPress={addOrderCount}
                 >
                   <Ionicons name="add-circle" size={22} color={'white'} />
                   
                 </TouchableOpacity>
-                <Text style={style.x}>1</Text>
+                <Text style={style.x}>{orderCount}</Text>
                 <TouchableOpacity
                 style={style.ca}
+                onPress={removeOrderCount}
                 >
                   <Ionicons name="remove-circle" size={22} color={'white'} />
                   
