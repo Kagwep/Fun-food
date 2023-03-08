@@ -26,6 +26,8 @@ const DrinkItem = ({
     const handleSubmit = async(e) => {
 
       const ids = uuid();
+      const order_count = orderCount;
+      const order_price = order_count*price;
 
 
       const newItem = { id,name,image, category,price };
@@ -35,7 +37,7 @@ const DrinkItem = ({
         "image": image,
         "name": name,
         "price": price,
-      } };
+      },order_count ,order_price };
     
       setUnorders([...unOrders, newItem]);
 
@@ -75,8 +77,7 @@ const DrinkItem = ({
       formData.append('item_id',id);
       formData.append('category',category);
     
-      const order_count = orderCount;
-      const order_price = order_count*price;
+
     
       formData.append('order_count',order_count);
       formData.append('order_price',order_price);
@@ -215,8 +216,8 @@ const DrinkItem = ({
         <TouchableOpacity
         activeOpacity={1}
         style={style.card}
-        onPress={() => navigation.navigate('Drink', 
-        {drinkId:id, name,description,image,drink_category,price,category
+        onPress={() => navigation.navigate('Food', 
+        {itemId:id, name,description,image,drink_category,price,category
         })}
         >
             <View>
@@ -231,10 +232,12 @@ const DrinkItem = ({
               </TouchableOpacity>
             </View>
             <View style={style.info}>
+            
               <View style={style.des}>
+              <Text style={style.text}>{name}</Text>
             <Text style={style.text2}>ksh {price}</Text>
-            <Text style={style.text}>{name}</Text>
             </View>
+            <View style={style.ico}>
             <View style={style.car}>
                 <TouchableOpacity
                 style={style.ca}
@@ -252,6 +255,7 @@ const DrinkItem = ({
                   
                 </TouchableOpacity>
             </View>
+           
             <View style={style.cart}>
                 <TouchableOpacity
                 style={style.cas}
@@ -260,6 +264,7 @@ const DrinkItem = ({
                   <Ionicons name="add" size={18} color={'white'} />
                   <Text style={{textAlign:"center",fontSize:14,fontWeight:'400'}}> Add to Order</Text>
                 </TouchableOpacity>
+              </View>
               </View>
             </View>
             
@@ -283,12 +288,23 @@ const style = StyleSheet.create({
         
     },
     container: {
-        flex: 1,
-        alignItems:"center",
-        justifyContent: "center",
-        paddingHorizontal: 3,
+      flex: 1,
+      // alignItems:"center",
+      // justifyContent: "center",
+      paddingHorizontal: 5,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 10,
+      backgroundColor:'white',
+      borderRadius:10
+      
 
-        
+      
       },
       tinyLogo: {
         width: 100,
@@ -296,7 +312,9 @@ const style = StyleSheet.create({
         borderRadius:5,
       },
       text:{
-        textAlign:"center",
+        fontSize:16,
+        fontWeight:'bold',
+        marginLeft:5,
       }
       ,
       text1:{
@@ -305,8 +323,9 @@ const style = StyleSheet.create({
       }
       ,
       text2:{
-        textAlign:"center",
-        color:'red'
+        color:'red',
+        fontSize:16,
+        marginLeft:5,
       },
       text4:{
         textAlign:"center",
@@ -324,19 +343,20 @@ const style = StyleSheet.create({
         padding:5
       },
       info:{
-        flexDirection:'row',
         paddingLeft:7,
       },
       des:{
-        alignItems:'center',
-        justifyContent:'center'
+        // alignItems:'center',
+        // justifyContent:'center'
       },
       ca:{
 
         flexDirection:'row',
         backgroundColor:'rgb(255,191,0)',
         padding:5,
-        borderRadius:10
+        borderRadius:10,
+        marginVertical:5,
+        marginHorizontal:5,
 
       },
       car:{
@@ -352,7 +372,14 @@ const style = StyleSheet.create({
         padding:3,
         
         
-      }
+      },
+      ico:{
+        
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-between',
+        
+      },
 
 });
 

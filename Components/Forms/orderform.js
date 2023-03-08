@@ -7,9 +7,9 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 const OrderForm = () => {
 
 
-  const [food, setFood] = useState('');
-  const [drink, setDrink] = useState('');
-  const [fruit, setFruit] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+
 
   const navigation = useNavigation();
 
@@ -26,48 +26,26 @@ const OrderForm = () => {
       })
      },[])
 
-  const handleOrder = async () => {
-    try {
-      const response = await fetch('https://funfood.vercel.app/api/orders-checkout/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          food: food,
-          drink: drink,
-          fruit: fruit,
-        })
-      });
-      const data = await response.json();
-      console.log(data); // do something with the data
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Order CheckOut</Text>
       <TextInput
-        value={food}
-        onChangeText={setFood}
-        placeholder="Food"
+        value={name}
+        onChangeText={setName}
+        placeholder="Name"
         style={styles.input}
       />
       <TextInput
-        value={drink}
-        onChangeText={setDrink}
-        placeholder="Drink"
+        value={phone}
+        onChangeText={setPhone}
+        placeholder="Phone Number"
         style={styles.input}
       />
-      <TextInput
-        value={fruit}
-        onChangeText={setFruit}
-        placeholder="Fruit"
-        style={styles.input}
-      />
-      <Button title="Place order" onPress={handleOrder} style={styles.button} />
+      <Button title="Place order"
+      onPress={() => navigation.navigate('UnOrder', 
+        {name, phone
+        })}
+         style={styles.button} />
     </View>
   );
 };

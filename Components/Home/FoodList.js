@@ -60,7 +60,7 @@ const FoodList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
     console.log(category,"dfsgdfjkl")
 
   return (
-    <View>
+    <View style={style.eventlist}>
         <Animated.FlatList 
         // contentInset={contentInset}
         // contentOffset={contentOffset}
@@ -88,7 +88,7 @@ const FoodList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
 
 const style = StyleSheet.create({
     eventlist:{
-        padding:10,
+        padding:5,
     } ,
      header: {
       height: 100,

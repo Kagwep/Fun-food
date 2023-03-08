@@ -27,6 +27,10 @@ const handleSubmit = async(e) => {
 
   const ids = uuid();
 
+  const order_count = orderCount;
+  const order_price = order_count*price;
+
+
   const newItem = { id,name,image, category,price };
   const order = { id:ids,item_details: {
     "category": category,
@@ -34,7 +38,7 @@ const handleSubmit = async(e) => {
     "image": image,
     "name": name,
     "price": price,
-  } };
+  },order_count ,order_price };
 
   setUnorders([...unOrders, newItem]);
 
@@ -230,9 +234,10 @@ const removeOrderCount = () =>{
             </View>
             <View style={style.info}>
             <View style={style.des}>
-            <Text style={style.text2}>ksh {price}</Text>
             <Text style={style.text}>{name}</Text>
+            <Text style={style.text2}>ksh {price}</Text>
             </View>
+            <View style={style.ico}>
             <View style={style.car}>
                 <TouchableOpacity
                 style={style.ca}
@@ -260,6 +265,7 @@ const removeOrderCount = () =>{
                 </TouchableOpacity>
             </View>
             </View>
+            </View>
             
 
 
@@ -280,11 +286,23 @@ const style = StyleSheet.create({
         
     },
     container: {
-        flex: 1,
-        alignItems:"center",
-        justifyContent: "center",
-        paddingHorizontal: 3,
+      flex: 1,
+      // alignItems:"center",
+      // justifyContent: "center",
+      paddingHorizontal: 5,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 10,
+      backgroundColor:'white',
+      borderRadius:10,
+      
 
+      
         
       },
       tinyLogo: {
@@ -293,7 +311,9 @@ const style = StyleSheet.create({
         borderRadius:5,
       },
       text:{
-        textAlign:"center",
+        fontSize:16,
+        fontWeight:'bold',
+        marginLeft:5,
       }
       ,
       text1:{
@@ -302,8 +322,9 @@ const style = StyleSheet.create({
       }
       ,
       text2:{
-        textAlign:"center",
-        color:'red'
+        fontSize:16,
+        color:'red',
+        marginLeft:5,
       },
       text4:{
         textAlign:"center",
@@ -320,7 +341,8 @@ const style = StyleSheet.create({
         flexDirection:'row',
         backgroundColor:'rgb(255,191,0)',
         padding:5,
-        borderRadius:10
+        borderRadius:10,
+        marginHorizontal:5
 
       },
       cart:{
@@ -336,12 +358,11 @@ const style = StyleSheet.create({
         
       },
       info:{
-        flexDirection:'row',
         paddingLeft:5,
       },
       des:{
-        alignItems:'center',
-        justifyContent:'center'
+        // alignItems:'center',
+        // justifyContent:'center'
       },
       x:{
         fontSize:18,
@@ -349,7 +370,14 @@ const style = StyleSheet.create({
         padding:3,
         
         
-      }
+      },
+      ico:{
+        
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-between',
+        
+      },
 
 });
 

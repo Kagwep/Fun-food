@@ -1,8 +1,8 @@
 import React, { useState ,useLayoutEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity,ImageBackground,Dimensions,Image,Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity,ImageBackground,Dimensions,Image,Alert,ScrollView } from 'react-native';
 import { useNavigation , useRoute} from '@react-navigation/native';
 import {HeaderBackButton} from "@react-navigation/elements";
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Callout, Circle, Marker } from 'react-native-maps';
 
 export default function UserRegistration() {
   const [fullNames, setFullNames] = useState('');
@@ -10,16 +10,19 @@ export default function UserRegistration() {
   const [location, setLocation] = useState('');
   const [password, setPassword] = useState('');
 
-  const [mapLocation, setMapLocation] = useState({
-    latitude: defaultLatitude,
-    longitude: defaultLongitude,
-  });
+  const [pin, setPin] = React.useState({
+        
+    latitude: -1.286389,
+    longitude:  36.817223,
+  
+})
 
-  const defaultLatitude = 37.78825;
-  const defaultLongitude = -122.4324;
+  // const defaultLatitude = 37.78825;
+  // const defaultLongitude = -122.4324;
 
 
   const navigation = useNavigation();
+  const route =useRoute();
 
   useLayoutEffect(() => {
       navigation.setOptions({
@@ -33,6 +36,8 @@ export default function UserRegistration() {
         )
       })
      },[])
+
+     const {longitude,latitude} = route.params;
   
   const handleSubmit = () => {
     const data = {
@@ -85,12 +90,13 @@ export default function UserRegistration() {
 
   return (
     <View style={styles.containers}>
-            <ImageBackground
+        <ImageBackground
             style={[styles.fixed, styles.containter]}
             source={
               require('./funfood.webp')
             }
       />
+
       <View  style={[styles.fixed, styles.scrollview]}>
       <Image style={styles.tinyLogo} source={require('./register.png')} />
       <Text style={styles.label}>Full Names:</Text>
@@ -122,21 +128,7 @@ export default function UserRegistration() {
         secureTextEntry={true}
       />
 
-<MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: defaultLatitude,
-          longitude: defaultLongitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        onPress={event => setMapLocation(event.nativeEvent.coordinate)}
-      >
-        <Marker coordinate={mapLocation} />
-      </MapView>
-      <Text style={styles.locationText}>
-        Latitude: {location.latitude.toFixed(4)}, Longitude: {location.longitude.toFixed(4)}
-      </Text>
+ 
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Register</Text>
@@ -146,6 +138,8 @@ export default function UserRegistration() {
       </TouchableOpacity>
       </View>
 
+
+
     </View>
   );
 }
@@ -153,8 +147,6 @@ export default function UserRegistration() {
 const styles = StyleSheet.create({
   containers: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
     padding: 20,
   },
   label: {
@@ -200,9 +192,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     
+    
   },
  scrollview: {
-   backgroundColor: 'rgba(255, 255, 255, 0.5)'
+   backgroundColor: 'rgba(255, 255, 255, 0.5)',
+   backgroundColor:'#ffff'
+
  },
  button1: {
    padding: 10,
@@ -219,5 +214,15 @@ const styles = StyleSheet.create({
   width: '100%',
   height: 150,
   
+},
+container: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+map: {
+      
+  width: '100%',
+  height: '50%',
 },
 });

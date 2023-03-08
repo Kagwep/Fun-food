@@ -2,13 +2,16 @@ import React from 'react'
 import { TouchableOpacity,Text,StyleSheet, View,Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const PriceCategoryItem = ({id,name,setPriceCategory,index}) => {
+const PriceCategoryItem = ({id,name,setPriceCategory,index,setPriceCatId,active}) => {
     const navigation = useNavigation();
   return (
     <View style={[style.container,index  === 0 ? {marginLeft:3,marginVertical:5} : {marginLeft:15,marginVertical:5,alignItems:'center',justifyContent:'center'}]}>
         <TouchableOpacity
-        style={style.card}
-        onPress={() => setPriceCategory(id)}
+        style={[style.card,active ? {backgroundColor:"#8BC34A"} : {backgroundColor:"white"}]}
+        onPress={() => {
+          setPriceCategory(id);
+          setPriceCatId(id);
+        }}
         
         // onPress={() => navigation.navigate(name)}
 
@@ -29,9 +32,9 @@ const style = StyleSheet.create({
     card:{
         marginVertical:5,
         backgroundColor:'white',
-        padding:5,
         alignItems:'center',
-        borderRadius:10
+        borderRadius:10,
+      
         
         
     },

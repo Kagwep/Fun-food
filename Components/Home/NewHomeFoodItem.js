@@ -119,7 +119,7 @@ const handleSubmitWish = async(e) => {
         activeOpacity={1}
         style={style.card}
         onPress={() => navigation.navigate('Food', 
-        {foodId:id, name,description,image,category,price
+        {itemId:id, name,description,image,category,price
         })}
         >
             <View>
@@ -132,7 +132,7 @@ const handleSubmitWish = async(e) => {
               <TouchableOpacity onPress={handleSubmitWish}  style={{ position: 'absolute', top: 1, right: 1,backgroundColor:'#A7C7E7',borderRadius: 50, overflow: 'hidden', padding:2 }}>
                 <Ionicons name="ios-heart" size={18} color={color} />
               </TouchableOpacity>
-              <Text style={style.text}>{name}</Text>
+              {/* <Text style={style.text}>{name}</Text> */}
             </View>
  
         </TouchableOpacity>

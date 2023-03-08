@@ -7,12 +7,12 @@ import PriceCategoryItem from './PriceCategorlyItem';
 
 const PriceCatgoryList = ({setPriceCategory}) => {
     const renderItem = ({item,index}) => {
-        return <PriceCategoryItem id={item.id} name={item.category_name} setPriceCategory={setPriceCategory} index={index} active={item.id === catId} handlePress = {() => setCatId(item.id)}/>
+        return <PriceCategoryItem id={item.id} name={item.p_name} setPriceCategory={setPriceCategory} index={index} active={item.id === priceCatId} setPriceCatId={setPriceCatId}/>
     }
 
     const [price_categories, setPriceCategories] = useState([]);
 
-    const [catId,setCatId] = useState(1);
+    const [priceCatId,setPriceCatId] = useState('');
     
     useEffect(() => {
         const fetchDrinkCategories = async () => {
@@ -41,6 +41,7 @@ const PriceCatgoryList = ({setPriceCategory}) => {
         }
         horizontal
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
         />
         
      </View>

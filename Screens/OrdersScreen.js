@@ -4,6 +4,8 @@ import OrderList from '../Components/Home/OrderList';
 import {HeaderBackButton} from "@react-navigation/elements";
 import { useNavigation , useRoute} from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 // import ProfileDetails from './ProfileDetails';
 
 
@@ -17,6 +19,7 @@ const OrdersScreen = () => {
   const [filter, setFilter] = useState({ price: '', product_name: '' });
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
+  const [token, setToken]=useState('');
 
 
   useLayoutEffect(() => {
@@ -31,6 +34,39 @@ const OrdersScreen = () => {
         )
       })
      },[])
+
+     useFocusEffect(
+      React.useCallback(() => {
+        
+     
+        AsyncStorage.getItem('token')
+        .then(token => {
+          // If the token exists, fetch the products
+          if (token) {
+              setToken(token)
+          }
+        })
+        .catch(error => {
+          // If there is an error, set the orders state variable to the default value
+          console.log(error)
+          // setOrders(unorders.orders);
+        });
+        let isActive = true;
+        return () => {
+          isActive = false;
+        };
+      }, [category, order, search,token])
+    );
+
+
+    const onCheckOutPress = () =>{
+      if(token){
+        console.log(token)
+      }else{
+        navigation.navigate("Checkout")
+      }
+    }
+    
   return (
     <View style={style.screen}>
       <View style={style.header}>
@@ -48,7 +84,7 @@ const OrdersScreen = () => {
          
           <TouchableOpacity
           style={style.ord}
-          onPress={() => navigation.navigate("Checkout")}
+          onPress={onCheckOutPress}
           >
           <Text style={style.checkText}> Place Order</Text>
           <Ionicons name="arrow-forward-circle" size={24} color={'#FFC000'} />

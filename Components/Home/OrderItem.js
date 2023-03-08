@@ -81,9 +81,9 @@ const OrderItem = ({
         <TouchableOpacity
         activeOpacity={1}
         style={[style.card,style.shadowProp]}
-        // onPress={() => navigation.navigate('Fruit', 
-        // {fruitId:id, name,description,image,category,price
-        // })}
+        onPress={() => navigation.navigate('Food', 
+        {itemId:id, name:item_details.name,description:item_details.description,image:item_details.image,category:item_details.category,price:item_details.price
+        })}
         >
             <View>
             <Image

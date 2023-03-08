@@ -170,8 +170,8 @@ const WishItem = ({
         <TouchableOpacity
         activeOpacity={1}
         style={style.card}
-        onPress={() => navigation.navigate('Fruit', 
-        {fruitId:id, item_id,item_details
+        onPress={() => navigation.navigate('Food', 
+        {itemId:id, name:item_details.name,description:item_details.description,category:item_details.category,price:item_details.price,image:item_details.image
         })}
         >
             <View>

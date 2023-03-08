@@ -18,7 +18,7 @@ const DrinkScreen = () => {
     const [filter, setFilter] = useState({ price: '', product_name: '' });
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState('');
-
+    const [catDrinkId,setDrinkCatId] = useState('');
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -36,13 +36,17 @@ const DrinkScreen = () => {
   return (
     <View style={styles.screen}>
     <DrinksSearch setSearch={setSearch}/>
-    <DrinkCatgoryList setCategory={setCategory}/>
+    <View style={styles.drk}> 
+      <DrinkCatgoryList setCategory={setCategory} setDrinkCatId={setDrinkCatId} catDrinkId={catDrinkId}/>
+    </View>
+   
     {category && (
         <TouchableOpacity
         style={styles.catbac}
         onPress={() => {
           setCategory(null);
           setSearch(null);
+          setDrinkCatId(null);
         }}
         
         >
@@ -75,11 +79,34 @@ const styles = StyleSheet.create({
     catbac:{
       flexDirection:'row',
       paddingBottom:10,
-      marginLeft:20
+      justifyContent:'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+      backgroundColor: 'white',
     },
     catbactext:{
       paddingTop:5
       
+    },
+    drk:{
+      justifyContent:'center',
+      // shadowColor: '#000',
+      // shadowOffset: {
+      //   width: 0,
+      //   height: 2,
+      // },
+      // shadowOpacity: 0.25,
+      // shadowRadius: 3.84,
+      elevation: 5,
+      backgroundColor: 'white',
+      padding: 0,
+      marginBottom:5,
     },
 })
 

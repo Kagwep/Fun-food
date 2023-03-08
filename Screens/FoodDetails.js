@@ -13,10 +13,10 @@ const FoodDetails = () => {
    const navigation = useNavigation();
    const [Result, SetResult] = useState('');
 
-   const {foodId, name,description,image,price} = route.params;
+   const {itemId, name,description,image,price} = route.params;
    useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle:{name},
+      headerTitle:'Item Details',
       headerLeft: () => (
         <HeaderBackButton 
           tintColor='white'
@@ -43,10 +43,10 @@ const FoodDetails = () => {
               style={style.tinyLogo}
               source={{uri: image}}
               />
-              <TouchableOpacity onPress={handlePress}  style={{ position: 'absolute', top: 1, right: 1,backgroundColor:'#A7C7E7',borderRadius: 50, overflow: 'hidden', padding:2 }}>
+              <TouchableOpacity onPress={handlePress}  style={{ position: 'absolute', top: 7, right: 1,backgroundColor:'#A7C7E7',borderRadius: 50, overflow: 'hidden', padding:2 }}>
                 <Ionicons name="ios-heart" size={22} color={color} />
               </TouchableOpacity>
-              <TouchableOpacity onPress={handlePress1}  style={{ position: 'absolute', bottom: 1, left: 1,backgroundColor:'#A7C7E7',borderRadius: 50, overflow: 'hidden', padding:2,flexDirection:'row' }}>
+              <TouchableOpacity onPress={handlePress1}  style={{ position: 'absolute', bottom: 7, left: 7,backgroundColor:'#A7C7E7',borderRadius: 50, overflow: 'hidden', padding:2,flexDirection:'row' }}>
                 <Ionicons name="star" size={22} color={'orange'} />
                 <Text> 4.6 </Text>
               </TouchableOpacity>
@@ -113,7 +113,7 @@ const FoodDetails = () => {
 const style = StyleSheet.create({
 
   cont:{
-    backgroundColor:'rgb(255, 192, 0)',
+    backgroundColor:'rgb(255, 255, 255)',
   },
 
     screen:{
@@ -121,12 +121,31 @@ const style = StyleSheet.create({
        
         textAlign:"center",
         marginBottom:10,
+        marginHorizontal:10,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 10,
 
     },
     tinyLogo: {
       width: deviceWidth,
       maxWidth:"100%",
       height: deviceWidth,
+      margin:5,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 0,
+      borderRadius:10
     },
     text1:{
       textAlign:"center",
@@ -163,10 +182,8 @@ const style = StyleSheet.create({
         
       },
       pdetails:{
-        backgroundColor:'rgb(224,224,224)',
-        zIndex:2,
-       
-     
+        backgroundColor:'rgb(255,255,255)',
+        zIndex:2, 
       },
       pdet:{
         backgroundColor:"white",
@@ -176,6 +193,14 @@ const style = StyleSheet.create({
         borderTopRightRadius:10,
         zIndex:10,
         marginBottom:10,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 10,
 
       },
       pdes:{
@@ -196,6 +221,14 @@ const style = StyleSheet.create({
         marginHorizontal:5,
         borderBottomLeftRadius:10,
         borderBottomRightRadius:10,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 10,
       },
       review:{
         marginTop:10

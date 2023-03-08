@@ -26,6 +26,10 @@ const FruitsItem = ({
     const handleSubmit = async(e) => {
       const ids = uuid();
 
+      const order_count = orderCount;
+      const order_price = order_count*price;
+
+
       const newItem = { id,name,image, category,price };
       const order = { id:ids,item_details: {
         "category": category,
@@ -33,7 +37,7 @@ const FruitsItem = ({
         "image": image,
         "name": name,
         "price": price,
-      } };
+      },order_count ,order_price };
     
       setUnorders([...unOrders, newItem]);
     
@@ -218,8 +222,8 @@ const FruitsItem = ({
         <TouchableOpacity
         activeOpacity={1}
         style={style.card}
-        onPress={() => navigation.navigate('Fruit', 
-        {fruitId:id, name,description,image,category,price
+        onPress={() => navigation.navigate('Food', 
+        {itemId:id, name,description,image,category,price
         })}
         >
             <View>
@@ -236,10 +240,12 @@ const FruitsItem = ({
             
             <View style={style.info}>
               <View style={style.des}>
-              <Text style={style.text2}>ksh {price}</Text>
               <Text style={style.text}>{name}</Text>
+              <Text style={style.text2}>ksh {price}</Text>
               </View>
+              <View style={style.ico}>
               <View style={style.car}>
+                
                 <TouchableOpacity
                 style={style.ca}
                 onPress={addOrderCount}
@@ -255,7 +261,7 @@ const FruitsItem = ({
                   <Ionicons name="remove-circle" size={22} color={'white'} />
                   
                 </TouchableOpacity>
-            </View>
+              </View>
               <View style={style.cart}>
                 <TouchableOpacity
                 style={style.cas}
@@ -264,6 +270,7 @@ const FruitsItem = ({
                   <Ionicons name="add" size={18} color={'white'} />
                   <Text style={{textAlign:"center",fontSize:14,fontWeight:'400'}}> Add to Order</Text>
                 </TouchableOpacity>
+              </View>
               </View>
             </View>
 
@@ -292,13 +299,24 @@ const style = StyleSheet.create({
         flex: 1,
         // alignItems:"center",
         // justifyContent: "center",
-        paddingHorizontal: 3,
+        paddingHorizontal: 5,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 10,
+        backgroundColor:'white',
+        borderRadius:10
+        
 
         
       },
       des:{
-        alignItems:'center',
-        justifyContent:'center'
+        // alignItems:'center',
+        // justifyContent:'center'
       },
       tinyLogo: {
         width: 100,
@@ -306,8 +324,9 @@ const style = StyleSheet.create({
         borderRadius:5,
       },
       text:{
-        textAlign:"center",
-        fontSize:14,
+        paddingLeft:5,
+        fontSize:16,
+        fontWeight:'bold'
       }
       ,
       text1:{
@@ -316,9 +335,9 @@ const style = StyleSheet.create({
       }
       ,
       text2:{
-        textAlign:"center",
+        paddingLeft:5,
         color:'red',
-        fontSize:14,
+        fontSize:16,
       },
       text4:{
         textAlign:"center",
@@ -331,12 +350,10 @@ const style = StyleSheet.create({
         borderRadius:10
       },
       cart:{
-        alignItems:'center',
-        justifyContent:'center',
         padding:5
       },
       info:{
-        flexDirection:'row',
+        flexDirection:'column',
         paddingLeft:5,
       },
       ca:{
@@ -344,7 +361,8 @@ const style = StyleSheet.create({
         flexDirection:'row',
         backgroundColor:'rgb(255,191,0)',
         padding:5,
-        borderRadius:10
+        borderRadius:10,
+        marginHorizontal:10
 
       },
       car:{
@@ -360,7 +378,15 @@ const style = StyleSheet.create({
         padding:3,
         
         
-      }
+      },
+      ico:{
+        
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-between',
+        
+      },
+
 
 });
 

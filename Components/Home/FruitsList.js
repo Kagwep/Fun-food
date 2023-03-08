@@ -33,24 +33,43 @@ const FruitsList = ({contentInset,contentOffset,priceCategory,contentContainerSt
   
       const fetchProducts = async () => {
 
+
+
         let url = 'https://funfood.vercel.app/api/fruits/';
 
-        if (search && !category) {
+        console.log('called')
+
+        if (search && !category && !priceCategory) {
           url += `?search=${search}`;
-        } else if (category && !search) {
+        } else if (category && !search && !priceCategory) {
           url += `?in_category=${category}`;
-        } else if (category && search) {
-          url += `?drink_category=${category}&search=${search}`;
+        } else if (category && search && !priceCategory) {
+          url += `?in_category=${category}&search=${search}`;
           // setSearch(null);
         }
-        else if (category && priceCategory) {
-          url += `?drink_category=${category}&price_category=${priceCategory}`;
+        else if (!category && !search && priceCategory) {
+          url += `?price_category=${priceCategory}`;
+          // setSearch(null);
+        }
+        else if (category && search && priceCategory) {
+          url += `?in_category=${category}&search=${search}&price_category=${priceCategory}`;
+          // setSearch(null);
+        }
+        else if (category && priceCategory && !search) {
+          url += `?in_category=${category}&price_category=${priceCategory}`;
+          
+          // setSearch(null);
+        }
+        else if (!category && priceCategory && search) {
+          url += `?search=${search}&price_category=${priceCategory}`;
+          
           // setSearch(null);
         }
 
         if (order.name) {
           url += `?ordering=${order.name}`;
         }
+        console.log('als',url)
         const response = await fetch(url);
         const data = await response.json();
         setProducts(data);
@@ -59,16 +78,17 @@ const FruitsList = ({contentInset,contentOffset,priceCategory,contentContainerSt
 
     useEffect(() => {
       fetchProducts();
-    }, [category, order,search]);
+    }, [category, order,search,priceCategory]);
 
     // if (loading) return <ActivityIndicator size='large' marginVertical={30} />
    
 
     console.log("this",products)
     console.log(category,"dfsgdfjkl")
+    console.log(priceCategory)
 
   return (
-    <View>
+    <View style={style.eventlist}>
         <Animated.FlatList 
         // contentInset={contentInset}
         // contentOffset={contentOffset}
@@ -96,7 +116,8 @@ const FruitsList = ({contentInset,contentOffset,priceCategory,contentContainerSt
 
 const style = StyleSheet.create({
     eventlist:{
-        padding:10,
+        backgroundColor:' #EAEAEA',
+        padding:5,
     } ,
      header: {
       height: 100,

@@ -5,14 +5,14 @@ import DrinkCategoryItem from './DrinkCategoryItem';
 // import React, { useState, useEffect } from 'react';
 // import { MainCategories } from '../../Data/MainCategory';
 
-const DrinkCatgoryList = ({setCategory}) => {
+const DrinkCatgoryList = ({setCategory,catDrinkId,setDrinkCatId}) => {
     const renderItem = ({item,index}) => {
-        return <DrinkCategoryItem id={item.id} name={item.drink_name} setCategory={setCategory} index={index} active={item.id === catId} handlePress = {() => setCatId(item.id)}/>
+        return <DrinkCategoryItem id={item.id} name={item.drink_name} setCategory={setCategory} index={index} active={item.id === catDrinkId} setDrinkCatId = {setDrinkCatId}/>
     }
 
     const [drink_categories, setDrinkCategories] = useState([]);
 
-    const [catId,setCatId] = useState(1);
+  
     
     useEffect(() => {
         const fetchDrinkCategories = async () => {
@@ -41,6 +41,7 @@ const DrinkCatgoryList = ({setCategory}) => {
         }
         horizontal
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
         />
         
      </View>

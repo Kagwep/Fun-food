@@ -40,6 +40,7 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
       const fetchProducts = async () => {
 
         let url = 'https://funfood.vercel.app/api/orders/';
+        console.log('called')
         if (category) {
           url += `?category=${category}`;
         }
@@ -51,6 +52,7 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
         }
         const response = await fetch(url);
         const data = await response.json();
+        console.log(data)
         setOrders(data);
       }
       

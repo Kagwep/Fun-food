@@ -71,7 +71,7 @@ const DrinkList = ({contentInset,setSearch,contentOffset,contentContainerStyle,b
     console.log(category,"dfsgdfjkl")
 
   return (
-    <View>
+    <View style={style.eventlist}>
         <Animated.FlatList 
         // contentInset={contentInset}
         // contentOffset={contentOffset}
@@ -99,7 +99,8 @@ const DrinkList = ({contentInset,setSearch,contentOffset,contentContainerStyle,b
 
 const style = StyleSheet.create({
     eventlist:{
-        padding:10,
+        padding:5,
+        
     } ,
      header: {
       height: 100,

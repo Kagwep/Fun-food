@@ -1,11 +1,13 @@
 import React,{useEffect,useState,useLayoutEffect} from 'react';
-import { View,Text,StyleSheet } from 'react-native';
+import { View,Text,StyleSheet,TouchableOpacity } from 'react-native';
 import { useNavigation , useRoute} from '@react-navigation/native';
 import FruitsList from '../Components/Home/FruitsList';
 import {HeaderBackButton} from "@react-navigation/elements";
 import FruitsSearch from '../Components/Stand/FruitsSearch';
 import FruitCatgoryList from '../Components/Categories/FruitCategoryList';
 import PriceCatgoryList from '../Components/Categories/PriceCategoryList';
+import { Ionicons } from '@expo/vector-icons';
+
 
 const NewFruitsScreen = () => {
 
@@ -18,6 +20,8 @@ const NewFruitsScreen = () => {
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState('');
     const [priceCategory, setPriceCategory] = useState('');
+    const [catFruitId,setFruitCatId] = useState('');
+    
 
 
     useLayoutEffect(() => {
@@ -34,9 +38,12 @@ const NewFruitsScreen = () => {
        },[])
   
   return (
-    <View >
+    <View style={styles.screen}>
     <FruitsSearch />
-    <FruitCatgoryList setCategory={setCategory}/>
+    <View style={styles.fruicatlist}>
+        <FruitCatgoryList setCategory={setCategory} setFruitCatId={setFruitCatId} catFruitId={catFruitId}/>
+    </View>
+    
     {category && (
         <>
         <TouchableOpacity
@@ -44,6 +51,8 @@ const NewFruitsScreen = () => {
         onPress={() => {
           setCategory(null);
           setSearch(null);
+          setFruitCatId(null);
+          setPriceCategory(null);
         }}
         
         >
@@ -77,12 +86,36 @@ const styles = StyleSheet.create({
   },
   catbac:{
     flexDirection:'row',
-    paddingBottom:10,
-    marginLeft:20
+    paddingBottom:5,
+    justifyContent:'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    backgroundColor: 'white',
+    padding: 0,
   },
   catbactext:{
     paddingTop:5
     
+  },
+  fruicatlist:{
+      justifyContent:'center',
+      // shadowColor: '#000',
+      // shadowOffset: {
+      //   width: 0,
+      //   height: 2,
+      // },
+      // shadowOpacity: 0.25,
+      // shadowRadius: 3.84,
+      elevation: 5,
+      backgroundColor: 'white',
+      padding: 0,
+      marginBottom:5,
   },
 })
 

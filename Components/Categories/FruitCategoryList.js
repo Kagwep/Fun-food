@@ -5,15 +5,14 @@ import FruitCategoryItem from './FruitCategoryItem';
 // import React, { useState, useEffect } from 'react';
 // import { MainCategories } from '../../Data/MainCategory';
 
-const FruitCatgoryList = ({setCategory}) => {
+const FruitCatgoryList = ({setCategory,catFruitId,setFruitCatId}) => {
     const renderItem = ({item,index}) => {
-        return <FruitCategoryItem id={item.id} name={item.category_name} setCategory={setCategory} index={index} active={item.id === catId} handlePress = {() => setCatId(item.id)}/>
+        return <FruitCategoryItem id={item.id} name={item.category_name} setCategory={setCategory} index={index} active={item.id === catFruitId} setFruitCatId = {setFruitCatId}/>
     }
 
     const [fruit_categories, setFruitCategories] = useState([]);
 
-    const [catId,setCatId] = useState(1);
-    
+   
     useEffect(() => {
         const fetchDrinkCategories = async () => {
           const response = await fetch('https://funfood.vercel.app/api/fruit_categories/');
@@ -41,6 +40,7 @@ const FruitCatgoryList = ({setCategory}) => {
         }
         horizontal
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
         />
         
      </View>
@@ -54,6 +54,7 @@ const style = StyleSheet.create({
     },
 
     ev:{
+   
         alignItems:'center',
         justifyContent:'center',
         paddingLeft:10,

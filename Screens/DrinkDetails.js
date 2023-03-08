@@ -17,7 +17,7 @@ const DrinkDetails = () => {
    const {drinkId, name,description,image,price,category} = route.params;
    useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle:{category},
+      headerTitle:'Drinks',
       headerLeft: () => (
         <HeaderBackButton 
           tintColor='white'

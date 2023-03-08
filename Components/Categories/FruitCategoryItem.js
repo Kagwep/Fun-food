@@ -2,13 +2,16 @@ import React from 'react'
 import { TouchableOpacity,Text,StyleSheet, View,Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const FruitCategoryItem = ({id,name,setCategory,index}) => {
+const FruitCategoryItem = ({id,name,setCategory,index,active,setFruitCatId}) => {
     const navigation = useNavigation();
   return (
     <View style={[style.container,index  === 0 ? {marginLeft:3,marginVertical:5} : {marginLeft:15,marginVertical:5,alignItems:'center',justifyContent:'center'}]}>
         <TouchableOpacity
-        style={style.card}
-        onPress={() => setCategory(id)}
+        style={[style.card,active ? {backgroundColor:"rgb(241,186,87)"} : {backgroundColor:"white"}]}
+        onPress={() => {
+          setCategory(id);
+          setFruitCatId(id)
+        }}
         
         // onPress={() => navigation.navigate(name)}
 
@@ -28,10 +31,18 @@ const style = StyleSheet.create({
 
     card:{
         marginVertical:5,
-        backgroundColor:'white',
+        backgroundColor:'#EAEAEA',
         padding:5,
         alignItems:'center',
-        borderRadius:10
+        borderRadius:10,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
         
         
     },
@@ -51,7 +62,8 @@ const style = StyleSheet.create({
         textAlign:"center",
         paddingHorizontal:10,
         paddingVertical:10,
-        fontWeight:'bold'
+        fontWeight:'bold',
+        color:'green'
       }
 
 });
