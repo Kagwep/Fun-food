@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView, { Callout, Circle, Marker } from 'react-native-maps';
-import { StyleSheet, View,Text,TouchableOpacity , Platform, Share, Linking} from 'react-native';
+import { StyleSheet, View,Text,TouchableOpacity , Platform, Share, Linking,Alert} from 'react-native';
 import {HeaderBackButton} from "@react-navigation/elements";
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
@@ -10,7 +10,11 @@ import PDFLib, { PDFDocument, PDFPage } from 'react-native-pdf-lib';
 import * as FileSystem from 'expo-file-system';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { addCheckout } from '../Home/CheckersReducer';
+import uuid from "uuid";
 
+import { useDispatch } from 'react-redux';
 
 const UnOrderMap = () => {
     const [pin, setPin] = React.useState({
@@ -21,10 +25,14 @@ const UnOrderMap = () => {
     })
     const navigation = useNavigation();
     const route = useRoute();
+    const dispatch = useDispatch();
 
     const {name,phone} = route.params;
     const unorders = useSelector(state => state.orders);
     const [orders, setOrders] = React.useState([]);
+    const [order_number, setOrderNumber] = React.useState('')
+    const [totalPrice, setTotalPrice] = React.useState(0);
+    
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -127,6 +135,149 @@ const UnOrderMap = () => {
           };
         }, [unorders])
       );
+
+      const fetchOrders = async () => {
+
+        let url = 'https://funfood.vercel.app/api/orders/';
+        console.log('called')
+
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log(data)
+        setOrders(data);
+      }
+      
+
+    // useEffect(() => {
+    //   fetchProducts();
+    // }, [category, order,search]);
+
+
+    useFocusEffect(
+      React.useCallback(() => {
+        
+     
+        AsyncStorage.getItem('token')
+        .then(token => {
+          // If the token exists, fetch the products
+          if (token) {
+            console.log(token);
+            fetchOrders();
+          } else {
+            // If the token does not exist, set the orders state variable to the default value
+            setOrders(unorders.orders);
+            // console.log("c")
+          }
+        })
+        .catch(error => {
+          // If there is an error, set the orders state variable to the default value
+          console.log(error)
+          // setOrders(unorders.orders);
+        });
+        let isActive = true;
+        return () => {
+          isActive = false;
+        };
+      }, [unorders])
+    );
+
+    const handleSubmit = async(e) => {
+
+      const ids = uuid();
+      
+      // const order_count = orderCount;
+      // const order_price = order_count*price;
+        let totalPrice = 0;
+        orders.forEach((order) => {
+          totalPrice += order.order_price;
+        });
+        const orderIds = orders.map(order => order.id);
+      // const newItem = { id,name,image, category,price };
+      const checkout = { id:ids,items:orderIds,orderer:name,latitude:pin.latitude,longitude:pin.longitude,order_total_price:totalPrice };
+    
+      // setUnorders([...unOrders, newItem]);
+    
+      e.preventDefault();
+      try {
+    
+      // Get the token from async storage
+      const token = await AsyncStorage.getItem('token');
+    
+      if (!token) {
+        // redirect the user to the login form
+        console.log('no token');
+    
+        dispatch(addCheckout(checkout));
+        
+        Alert.alert(
+          name,
+          'Order placed successfully!',
+          [
+            {
+              text: 'OK',
+              onPress: () => console.log('OK Pressed')
+            }
+          ],
+          { cancelable: false }
+        );
+        
+      }else {
+
+      const orderIds = orders.map(order => order.id);
+    
+      const user = await AsyncStorage.getItem('user');
+      const myUser = JSON.parse(user);
+    
+      const formData = new FormData();
+    
+      formData.append('items',orderIds);
+      // formData.append('category',category);
+      formData.append('orderer',myUser.id)
+      formData.append('latitude',pin.latitude)
+      formData.append('longitude',pin.longitude)
+      
+    
+      console.log(formData)
+      const response = await fetch('http://192.168.65.72:8000/api/checkout/', {
+        method: 'POST',
+        body: formData,
+      });
+    
+      // Process the response from the backend API
+      if (response.ok) {
+        // Form was successfully submitted
+        console.log('Order was successfully submitted');
+        
+    
+        // ...
+    
+        Alert.alert(
+          name,
+          'Order submitted successfully!',
+          [
+            {
+              text: 'OK',
+              onPress: () => console.log('OK Pressed')
+            }
+          ],
+          { cancelable: false }
+        );
+    
+      } else {
+        // There was an error with the request
+        console.log('Error:', response.statusText);
+      }}
+    } catch (error) {
+    
+      // if (error.response.status === 401) {
+      //   // redirect the user to the login form
+      //   return navigation.navigate('Login');
+      // }
+      // There was an error making the request
+      console.error(error);
+    }
+    
+    }
       
   return (
     <View style={styles.container}>
@@ -184,7 +335,7 @@ const UnOrderMap = () => {
         <>
         <TouchableOpacity
         style={styles.catbac}
-        onPress={generateReceiptPDF}
+        onPress={handleSubmit}
         
         >
 

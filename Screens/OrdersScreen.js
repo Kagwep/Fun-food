@@ -19,7 +19,7 @@ const OrdersScreen = () => {
   const [filter, setFilter] = useState({ price: '', product_name: '' });
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
-  const [token, setToken]=useState('');
+  // const [token, setToken]=useState('');
 
 
   useLayoutEffect(() => {
@@ -35,36 +35,47 @@ const OrdersScreen = () => {
       })
      },[])
 
-     useFocusEffect(
-      React.useCallback(() => {
+    //  useFocusEffect(
+    //   React.useCallback(() => {
         
      
+    //     AsyncStorage.getItem('token')
+    //     .then(token => {
+    //       // If the token exists, fetch the products
+    //       if (token) {
+    //           setToken(token)
+    //       }
+    //     })
+    //     .catch(error => {
+    //       // If there is an error, set the orders state variable to the default value
+    //       console.log(error)
+    //       // setOrders(unorders.orders);
+    //     });
+    //     let isActive = true;
+    //     return () => {
+    //       isActive = false;
+    //     };
+    //   }, [category, order, search,token])
+    // );
+
+
+    const onCheckOutPress = () =>{
         AsyncStorage.getItem('token')
-        .then(token => {
+        .then(async token => {
           // If the token exists, fetch the products
           if (token) {
-              setToken(token)
+            const user = await AsyncStorage.getItem('user');
+            const myUser = JSON.parse(user);
+            navigation.navigate('UnOrder', {name:myUser.full_names, phone:myUser.phone_number})
+
           }
         })
         .catch(error => {
           // If there is an error, set the orders state variable to the default value
-          console.log(error)
+          navigation.navigate("Checkout")
           // setOrders(unorders.orders);
         });
-        let isActive = true;
-        return () => {
-          isActive = false;
-        };
-      }, [category, order, search,token])
-    );
-
-
-    const onCheckOutPress = () =>{
-      if(token){
-        console.log(token)
-      }else{
-        navigation.navigate("Checkout")
-      }
+      
     }
     
   return (

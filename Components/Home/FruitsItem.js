@@ -165,6 +165,7 @@ const FruitsItem = ({
     
       formData.append('item_id',id);
       formData.append('category',category);
+      formData.append('user',myUser.id);
     
       const response = await fetch('https://funfood.vercel.app/api/wishlist/', {
         method: 'POST',

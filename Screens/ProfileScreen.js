@@ -1,17 +1,26 @@
 import React,{useEffect,useState,useLayoutEffect} from 'react'
-import { View,Text,StyleSheet, Button ,Alert,TouchableOpacity} from 'react-native';
+import { View,Text,StyleSheet, Button ,Alert,TouchableOpacity,ScrollView} from 'react-native';
 import {HeaderBackButton} from "@react-navigation/elements";
 import { useFocusEffect } from '@react-navigation/native';
 // import ProfileDetails from './ProfileDetails';
 import { useNavigation , useRoute} from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import OrderCheckoutsList from '../Components/Home/OrderCheckoutsList';
 
 const ProfileScreen = () => {
   const route =  useRoute();
   const navigation = useNavigation();
   const [loggedIn, setLoggedIn] = useState(true);
   const [userDetails, setUserDetails] = useState([]);
+
+
+  const [category, setCategory] = useState('');
+  const [order, setOrder] = useState('');
+  const [filter, setFilter] = useState({ price: '', product_name: '' });
+  const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState('');
+  const [catDrinkId,setDrinkCatId] = useState('');
 
   const user_details = "";
 
@@ -79,7 +88,7 @@ const ProfileScreen = () => {
   console.log(user_details)
 
   return (
-    <View>
+    <ScrollView>
     
      {loggedIn && (
         <View style={styles.container}>
@@ -93,6 +102,8 @@ const ProfileScreen = () => {
             <Ionicons name="ios-log-in" size={24} color="white" />
             <Text style={{color:'#fff',fontWeight:'bold',paddingTop:2}}> Log out </Text>
           </TouchableOpacity>
+
+
         
         
         </View>
@@ -115,8 +126,17 @@ const ProfileScreen = () => {
       </View>
   )}
     
+    <OrderCheckoutsList
+            loading={loading}
+            category={category}
+            order={order}
+            search ={search}
+            filter={filter}
+            setSearch={setSearch}
+
+          />
     {/* <Button title='some Details' onPress={() => navigation.navigate('Profile',{profileId:1})}/> */}
-   </View>
+   </ScrollView>
   )
 }
 
