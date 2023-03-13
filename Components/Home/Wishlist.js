@@ -34,9 +34,12 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
     const unwishes = useSelector(state => state.wishes);
 
   
-      const fetchProducts = async () => {
+      const fetchProducts = async (user) => {
 
-        let url = 'https://funfood.vercel.app/api/wishlist/';
+        let url = 'http://192.168.237.72:8000/api/wishlist/';
+
+        url += `?user=${user}`;
+        
         if (category) {
           url += `?fruits_category=${category}`;
         }
@@ -62,11 +65,13 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
         
      
         AsyncStorage.getItem('token')
-        .then(token => {
+        .then(async token => {
           // If the token exists, fetch the products
           if (token) {
             console.log(token);
-            fetchProducts();
+            const user = await AsyncStorage.getItem('user');
+            const myUser = JSON.parse(user);
+            fetchProducts(myUser.id);
           } else {
             // If the token does not exist, set the orders state variable to the default value
             setWishes(unwishes.wishes);

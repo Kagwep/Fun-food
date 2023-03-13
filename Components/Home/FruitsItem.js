@@ -224,7 +224,7 @@ const FruitsItem = ({
         activeOpacity={1}
         style={style.card}
         onPress={() => navigation.navigate('Food', 
-        {itemId:id, name,description,image,category,price
+        {id, name,description,image,category,price
         })}
         >
             <View>

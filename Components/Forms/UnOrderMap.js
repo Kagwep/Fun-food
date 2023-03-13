@@ -219,8 +219,14 @@ const UnOrderMap = () => {
             }
           ],
           { cancelable: false }
+          
         );
-        
+        const message = `New order Placed,Name: ${name}, Phone number: ${phone} order number ${order_number} Please deliver to this location ` + `https://www.google.com/maps/search/?api=1&query=${pin.latitude},${pin.longitude}`;
+
+   
+        const url = `whatsapp://send?phone=+254707801908&text=${message}`;
+      
+        Linking.openURL(url);
       }else {
 
       const orderIds = orders.map(order => order.id);
@@ -238,7 +244,7 @@ const UnOrderMap = () => {
       
     
       console.log(formData)
-      const response = await fetch('http://192.168.65.72:8000/api/checkout/', {
+      const response = await fetch('http://192.168.237.72:8000/api/checkout/order/', {
         method: 'POST',
         body: formData,
       });
@@ -247,9 +253,11 @@ const UnOrderMap = () => {
       if (response.ok) {
         // Form was successfully submitted
         console.log('Order was successfully submitted');
-        
-    
-        // ...
+
+        const data = await response.json();
+        console.log(data.id)
+        setOrderNumber(data.id);
+        // // ...
     
         Alert.alert(
           name,
@@ -262,7 +270,19 @@ const UnOrderMap = () => {
           ],
           { cancelable: false }
         );
-    
+
+       const o_number = order_number.toString()
+       const lat = (pin.latitude).toString()
+       const long = (pin.longitude).toString()
+
+        const message = `New order Placed,Name: ${name}, Phone number: ${phone} order number: ${o_number} Please deliver to this location https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
+        console.log(message)
+
+        const encodedMessage = encodeURIComponent(message);
+   
+        const url = `whatsapp://send?phone=+254707801908&text=${encodedMessage}`;
+      
+        Linking.openURL(url);
       } else {
         // There was an error with the request
         console.log('Error:', response.statusText);

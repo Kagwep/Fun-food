@@ -138,7 +138,7 @@ const WishItem = ({
     
     
   } else{
-      const response = await fetch(`https://funfood.vercel.app/api/wishlist/${id}/`, {
+      const response = await fetch(`http://192.168.237.72:8000/api/wishlist/${id}/`, {
         method: 'DELETE',
         // headers: {
         //   'Content-Type': 'application/json',
@@ -159,7 +159,7 @@ const WishItem = ({
           { cancelable: false }
         );
       } else {
-        Alert.alert('Error', 'Failed to delete order');
+        Alert.alert('Error', 'Failed to delete wish');
       }}}catch (error) {
     
         console.error(error);

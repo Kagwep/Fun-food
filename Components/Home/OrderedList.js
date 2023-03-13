@@ -2,13 +2,13 @@ import React from 'react'
 import { View,Text,FlatList,StyleSheet,Animated,ActivityIndicator } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 // import { Dummy_Data } from '../../Data/dummy';
-import OrderItem from './OrderItem';
+import OrderedItem from './OrderedItem';
 import  { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
+const OrderedList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search,ids}) => {
 
       // const [scrollY, setScrollY] = useState(0);
 
@@ -16,8 +16,9 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
       //   const currentScrollY = event.nativeEvent.contentOffset.y;
       //   setScrollY(currentScrollY);
       // };
-
+      const [isLoading, setIsLoading] = useState(true);
       const [orders, setOrders] = useState([]);
+      const [tot, setTotal] = useState('');
       const unorders = useSelector(state => state.orders);
     
     const fetchOrders = () => {
@@ -26,9 +27,11 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
     }
 
     const renderItem = ({item}) => {
-        return <OrderItem
+        return <OrderedItem
          id={item.id}
          item_details={item.item_details}
+         order_amount={item.order_amount} 
+         order_price={item.order_price}
          setOrders={setOrders}
          />
          
@@ -37,11 +40,14 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
     
 
   
-      const fetchProducts = async (user) => {
+      const fetchProducts = async () => {
 
-        let url = 'https://funfood.vercel.app/api/orders/';
-        url += `?order_made_by=${user}`
-        console.log('called')
+        let url = 'http://192.168.237.72:8000/api/checkout/order-checks/';
+
+        const ids_s = JSON.parse(ids);
+        const str_ids = ids_s.join(',');
+        url += `?ids=${str_ids}`
+        console.log('called',url)
         if (category) {
           url += `?category=${category}`;
         }
@@ -54,7 +60,12 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
         const response = await fetch(url);
         const data = await response.json();
         console.log(data)
+
         setOrders(data);
+        const total = data.reduce((acc, dat) => acc + dat.order_price, 0);
+
+        setTotal(total);
+        setIsLoading(false);
       }
       
 
@@ -67,30 +78,31 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
       React.useCallback(() => {
         
      
-        AsyncStorage.getItem('token')
-        .then(async token => {
-          // If the token exists, fetch the products
-          if (token) {
-            console.log(token);
-            const user = await AsyncStorage.getItem('user');
-            const myUser = JSON.parse(user);
-            fetchProducts(myUser.id);
-          } else {
-            // If the token does not exist, set the orders state variable to the default value
-            setOrders(unorders.orders);
-            // console.log("c")
-          }
-        })
-        .catch(error => {
-          // If there is an error, set the orders state variable to the default value
-          console.log(error)
-          // setOrders(unorders.orders);
-        });
+        // AsyncStorage.getItem('token')
+        // .then(async token => {
+        //   // If the token exists, fetch the products
+        //   if (token) {
+        //     console.log(token);
+        //     const user = await AsyncStorage.getItem('user');
+        //     const myUser = JSON.parse(user);
+           
+        //   } else {
+        //     // If the token does not exist, set the orders state variable to the default value
+        //     setOrders(unorders.orders);
+        //     // console.log("c")
+        //   }
+        // })
+        // .catch(error => {
+        //   // If there is an error, set the orders state variable to the default value
+        //   console.log(error)
+        //   // setOrders(unorders.orders);
+        // });
+        fetchProducts();
         let isActive = true;
         return () => {
           isActive = false;
         };
-      }, [category, order, search,unorders])
+      }, [category, order, search,unorders,ids])
     );
     
     // if (loading) return <ActivityIndicator size='large' marginVertical={30} />
@@ -102,7 +114,8 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
     const renderFooter = () => {
       return (
         <View style={{ backgroundColor: 'white', padding: 10 }}>
-          <Text style={{textAlign:'center'}}>You have {orders.length} items in Orders List</Text>
+          <Text style={{textAlign:'center'}}>You have {orders.length} items in Ordered List</Text>
+          <Text style={{textAlign:'center',color:'green'}}>Total: Ksh {tot}</Text>
         </View>
       );
     };
@@ -110,6 +123,9 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
 
   return (
     <View style={style.orderlist}>
+    {isLoading ? (
+        <ActivityIndicator />
+      ) : (
       <View style={style.inner}>
         <Animated.FlatList 
         // contentInset={contentInset}
@@ -133,6 +149,7 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
         
         />
         </View>
+           )}
      </View>
   )
 }
@@ -140,7 +157,8 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
 
 const style = StyleSheet.create({
     orderlist:{
-        flex:1
+        flex:1,
+        margin:5
     } ,
      header: {
       height: 100,
@@ -159,4 +177,4 @@ const style = StyleSheet.create({
 
 })
 
-export default OrderList;
+export default OrderedList;

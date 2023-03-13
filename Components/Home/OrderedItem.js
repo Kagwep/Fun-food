@@ -1,15 +1,13 @@
 import React , { useState } from 'react'
-import { TouchableOpacity,Text,StyleSheet, View,Image ,Alert,Dimensions} from 'react-native';
+import { TouchableOpacity,Text,StyleSheet, View,Image ,Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { removeOrder } from './OrdersReducer';
 import { useDispatch } from 'react-redux';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
-const OrderItem = ({
-  id,item_details,setOrders
+const OrderedItem = ({
+  id,item_details,setOrders,order_amount, order_price
 }) => {
     const navigation = useNavigation();
     const [color, setColor] = useState('white');
@@ -84,7 +82,7 @@ const OrderItem = ({
         activeOpacity={1}
         style={[style.card,style.shadowProp]}
         onPress={() => navigation.navigate('Food', 
-        {itemId:id, name:item_details.name,description:item_details.description,image:item_details.image,category:item_details.category,price:item_details.price
+        {id, name:item_details.name,description:item_details.description,image:item_details.image,category:item_details.category,price:item_details.price
         })}
         >
             <View>
@@ -94,17 +92,18 @@ const OrderItem = ({
                 uri: item_details.image,
               }}
             />
-              <TouchableOpacity onPress={handlePress}  style={{ position: 'absolute', top: 1, right: 10,backgroundColor:'#A7C7E7',borderRadius: 50, overflow: 'hidden', padding:2 }}>
+              <TouchableOpacity onPress={handlePress}  style={{ position: 'absolute', top: 1, right: 1,backgroundColor:'#A7C7E7',borderRadius: 50, overflow: 'hidden', padding:2 }}>
                 <Ionicons name="ios-heart" size={18} color={color} />
               </TouchableOpacity>
             </View>
             
             <View style={style.info}>
               <View style={style.des}>
-              <Text style={style.text2}>ksh {item_details.price}</Text>
+              <Text style={style.text2}>Quantity: {order_amount}</Text>
+              <Text style={style.price}>{order_amount} x {item_details.price} = {order_price}</Text>
               <Text style={style.text}>{item_details.name}</Text>
               </View>
-              <View style={style.cart}>
+              {/* <View style={style.cart}>
                 <TouchableOpacity
                 style={style.cas}
                 onPress={deleteOrder}
@@ -112,7 +111,7 @@ const OrderItem = ({
                   <Ionicons name="trash" size={18} color={'white'} />
           
                 </TouchableOpacity>
-              </View>
+              </View> */}
             </View>
 
             
@@ -125,55 +124,67 @@ const OrderItem = ({
 }
 
 const style = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    padding: 16,
-    elevation: 2,
-  },
-  card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  shadowProp: {
-    padding:5,
-  },
-  tinyLogo: {
-    width: 80,
-    height: 80,
-    marginRight: 16,
-    borderRadius: 5,
-  },
-  info: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flex: 1,
-  },
-  des: {
-    flex: 2,
-  },
-  text: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  text2: {
-    fontSize: 16,
-    color: '#888',
-    marginBottom: 8,
-  },
-  cart: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  cas: {
-    backgroundColor: '#FF6347',
-    padding: 8,
-    borderRadius: 5,
-  },
+
+    container: {
+        marginVertical: 10,
+        marginHorizontal: 20,
+        borderRadius: 10,
+        backgroundColor: '#fff',
+        overflow: 'hidden',
+        borderWidth: 1,
+        borderColor: '#ddd',
+        elevation: 2,
+      },
+      card: {
+        flexDirection: 'row',
+      },
+      imageContainer: {
+        position: 'relative',
+      },
+      image: {
+        width: 80,
+        height: 80,
+      },
+      heartIcon: {
+        position: 'absolute',
+        top: 5,
+        right: 5,
+        backgroundColor: '#f00',
+        borderRadius: 50,
+        overflow: 'hidden',
+        padding: 8,
+      },
+      heartIconColor: {
+        color: '#fff',
+      },
+      info: {
+        flex: 1,
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        justifyContent: 'space-between',
+      },
+      title: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#222',
+        marginBottom: 8,
+      },
+      description: {
+        fontSize: 14,
+        color: '#666',
+        marginBottom: 8,
+      },
+      price: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#f00',
+      },
+      tinyLogo: {
+        width: 80,
+        height: 80,
+        marginRight: 10,
+      },
+
 });
 
-export default OrderItem;
+export default OrderedItem;

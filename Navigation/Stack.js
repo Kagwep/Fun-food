@@ -28,6 +28,7 @@ import UserRegistration from '../Components/Forms/RegisterForm';
 import OrderForm from '../Components/Forms/orderform';
 import FunFoodMaps from '../Components/Forms/FunFoodMaps';
 import UnOrderMap from '../Components/Forms/UnOrderMap';
+import OrderedItemsScreen from '../Screens/OrderedItemsScreen';
 
 
 const Stack = createStackNavigator();
@@ -56,6 +57,8 @@ export const HomeStack =() => {
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Map" component={FunFoodMaps} />
       <Stack.Screen name="UnOrder" component={UnOrderMap} />
+      <Stack.Screen name="OrderComps" component={OrderedItemsScreen} />
+      
         
     </Stack.Navigator>
   );

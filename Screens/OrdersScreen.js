@@ -69,10 +69,13 @@ const OrdersScreen = () => {
             navigation.navigate('UnOrder', {name:myUser.full_names, phone:myUser.phone_number})
 
           }
+          else{
+            navigation.navigate("Checkout")
+          }
         })
         .catch(error => {
           // If there is an error, set the orders state variable to the default value
-          navigation.navigate("Checkout")
+          console.log(error)
           // setOrders(unorders.orders);
         });
       
@@ -123,9 +126,8 @@ const style = StyleSheet.create({
     },
     headerText:{
       textAlign:'center',
-      fontSize:20,
-      fontStyle:'italic',
-      fontWeight:'bold'
+      fontSize:16,
+      color:'green'
     },
     checkout:{
       paddingTop:5,

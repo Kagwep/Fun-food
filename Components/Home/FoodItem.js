@@ -219,7 +219,7 @@ const removeOrderCount = () =>{
         activeOpacity={1}
         style={style.card}
         onPress={() => navigation.navigate('Food', 
-        {foodId:id, name,description,image,category,price
+        {id, name,description,image,category,price
         })}
         >
             <View>
