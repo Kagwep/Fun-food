@@ -31,6 +31,7 @@ const DrinkList = ({contentInset,setSearch,contentOffset,contentContainerStyle,b
     }
 
     const [products, setProducts] = useState([]);
+    const [isLoading,setIsLoading] = useState(true);
 
   
       const fetchProducts = async () => {
@@ -57,6 +58,7 @@ const DrinkList = ({contentInset,setSearch,contentOffset,contentContainerStyle,b
         const response = await fetch(url);
         const data = await response.json();
         setProducts(data);
+        setIsLoading(false);
       }
       
 
@@ -72,6 +74,8 @@ const DrinkList = ({contentInset,setSearch,contentOffset,contentContainerStyle,b
 
   return (
     <View style={style.eventlist}>
+       {isLoading ? (<ActivityIndicator />) :(
+       <View style={style.inner}>
         <Animated.FlatList 
         // contentInset={contentInset}
         // contentOffset={contentOffset}
@@ -92,6 +96,8 @@ const DrinkList = ({contentInset,setSearch,contentOffset,contentContainerStyle,b
         showsVerticalScrollIndicator={false}
         
         />
+        </View>
+        )}
      </View>
   )
 }
@@ -100,7 +106,7 @@ const DrinkList = ({contentInset,setSearch,contentOffset,contentContainerStyle,b
 const style = StyleSheet.create({
     eventlist:{
         padding:5,
-        
+        flex:1
     } ,
      header: {
       height: 100,
@@ -112,6 +118,9 @@ const style = StyleSheet.create({
       right: 0,
       top: 0,
       zIndex: 10000
+    },
+    inner:{
+      flex:1
     },
 
 })

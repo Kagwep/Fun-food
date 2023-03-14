@@ -18,6 +18,7 @@ const OrderCheckoutsItem= ({
     longitude ,
     order_status ,
     status,
+    order_number,
 }) => {
     const navigation = useNavigation();
 
@@ -28,7 +29,7 @@ const OrderCheckoutsItem= ({
       onPress={() => navigation.navigate('OrderComps', {ids:ordered_items})}
     >
       <View style={styles.info}>
-        <Text style={styles.orderNumber}>Order Number: {id}</Text>
+        <Text style={styles.orderNumber}>Order Number: {order_number}</Text>
         <Text style={styles.status}>Status: {status}</Text>
         <Text style={styles.total}>Total Amount : {order_total_price}</Text>
         <Text style={styles.date}>placed at: {order_placed_at}</Text>

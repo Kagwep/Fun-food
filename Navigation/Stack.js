@@ -29,6 +29,8 @@ import OrderForm from '../Components/Forms/orderform';
 import FunFoodMaps from '../Components/Forms/FunFoodMaps';
 import UnOrderMap from '../Components/Forms/UnOrderMap';
 import OrderedItemsScreen from '../Screens/OrderedItemsScreen';
+import PanelItemsScreen from '../Screens/PanelItemsScreen';
+import PanelScreen from '../Screens/PanelScreen';
 
 
 const Stack = createStackNavigator();
@@ -58,6 +60,7 @@ export const HomeStack =() => {
       <Stack.Screen name="Map" component={FunFoodMaps} />
       <Stack.Screen name="UnOrder" component={UnOrderMap} />
       <Stack.Screen name="OrderComps" component={OrderedItemsScreen} />
+      <Stack.Screen name="PanelOrderComps" component={PanelItemsScreen} />
       
         
     </Stack.Navigator>
@@ -79,7 +82,7 @@ export const ProfileStack =() => {
 }
 
 
-export const ShopStack= () => {
+export const PanelStack= () => {
 
   const navigation = useNavigation();
 
@@ -87,7 +90,7 @@ export const ShopStack= () => {
     <Stack.Navigator
     screenOptions={()=>NavOptions(navigation)}
     >
-      <Stack.Screen name="Shop" component={OrdersDetails} />
+      <Stack.Screen name="Panel" component={PanelScreen} />
   
       </Stack.Navigator>
   );

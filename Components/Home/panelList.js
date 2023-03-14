@@ -4,13 +4,12 @@ import { RefreshControl } from 'react-native-gesture-handler';
 // import { Dummy_Data } from '../../Data/dummy';
 // import FruitsItem from './FruitsItem';
 import  { useState, useEffect } from 'react';
-// import OrderCheckoutsItem from './OrdersCheckoutsItems';
+import PanelItem from './PanelItem';
 import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import PanelsItem from './PanelItem';
 
-const PanelsList = ({contentInset,contentOffset,priceCategory,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
+const PanelList = ({contentInset,contentOffset,priceCategory,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search}) => {
 
       // const [scrollY, setScrollY] = useState(0);
 
@@ -20,7 +19,7 @@ const PanelsList = ({contentInset,contentOffset,priceCategory,contentContainerSt
       // };
 
     const renderItem = ({item}) => {
-        return <PanelsItem
+        return <PanelItem
          id={item.id}
          orderer =  {item.orderer}
          ordered_items = {item.ordered_items}
@@ -29,7 +28,7 @@ const PanelsList = ({contentInset,contentOffset,priceCategory,contentContainerSt
          latitide = {item.latitide}
          longitude = {item.longitude}
          order_status = {item.order_status}
-         
+         status = {item.status}
 
          />
          
@@ -39,14 +38,13 @@ const PanelsList = ({contentInset,contentOffset,priceCategory,contentContainerSt
 
     const [products, setProducts] = useState([]);
     const uncheckouts = useSelector(state => state.checkouts);
+    const [isLoading, setIsLoading] = useState(true);
   
       const fetchProducts = async (user) => {
 
 
 
-        let url = 'http://192.168.237.72:8000/api/checkout/order-comp/';
-
-        // url +=  `?orderer=${user}`;
+        let url = 'https://funfood.vercel.app/api/checkout/order-comp/';
 
         console.log('called')
 
@@ -84,6 +82,7 @@ const PanelsList = ({contentInset,contentOffset,priceCategory,contentContainerSt
         const response = await fetch(url);
         const data = await response.json();
         setProducts(data);
+        setIsLoading(false);
       }
       
 
@@ -101,10 +100,9 @@ const PanelsList = ({contentInset,contentOffset,priceCategory,contentContainerSt
             // If the token exists, fetch the products
             if (token) {
               console.log(token);
-            //   const user = await AsyncStorage.getItem('user');
-            //   const myUser = JSON.parse(user);
-            //   fetchProducts(myUser.id);
-              fetchProducts();
+              const user = await AsyncStorage.getItem('user');
+              const myUser = JSON.parse(user);
+              fetchProducts(myUser.id);
             } else {
               // If the token does not exist, set the orders state variable to the default value
               setProducts(uncheckouts.checkouts);
@@ -129,6 +127,10 @@ const PanelsList = ({contentInset,contentOffset,priceCategory,contentContainerSt
 
   return (
     <View style={style.eventlist}>
+          {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+      
         <Animated.FlatList 
         // contentInset={contentInset}
         // contentOffset={contentOffset}
@@ -145,7 +147,7 @@ null
         }
         showsVerticalScrollIndicator={false}
         
-        />
+        />)}
      </View>
   )
 }
@@ -157,6 +159,7 @@ const style = StyleSheet.create({
         padding:5,
         overflow:'scroll',
         margin:2,
+        flex:1,
     } ,
      header: {
       height: 100,
@@ -167,9 +170,9 @@ const style = StyleSheet.create({
       left: 0,
       right: 0,
       top: 0,
-      zIndex: 10000
+      zIndex: 1
     },
 
 })
 
-export default PanelsList;
+export default PanelList;

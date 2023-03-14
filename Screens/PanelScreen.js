@@ -6,18 +6,19 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation , useRoute} from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import OrderCheckoutsList from '../Components/Home/OrderCheckoutsList';
+import PanelList from '../Components/Home/panelList';
+import OrderssSearch from '../Components/Stand/OrderSearch';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 
-const HEADER_HEIGHT = 85;
+const HEADER_HEIGHT = 100;
 
 const HEADER_MAX_HEIGHT = 120;
 const HEADER_MIN_HEIGHT = 40;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
 
-const ProfileScreen = () => {
+const PanelScreen = () => {
   const route =  useRoute();
   const navigation = useNavigation();
   const [loggedIn, setLoggedIn] = useState(true);
@@ -37,7 +38,7 @@ const ProfileScreen = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle:'Profile',
+      headerTitle:'Ordered Items',
       headerLeft: () => (
         <HeaderBackButton 
           tintColor='white'
@@ -134,50 +135,26 @@ const ProfileScreen = () => {
   ];
   return (
     <View style={styles.psc}>
+      
      <Animated.View style={headerStyles}>
-     {loggedIn && (
         <View style={styles.container}>
           
-          <Text style={styles.field}><Ionicons name="person-circle" size={18} color="black" />: {userDetails.full_names}</Text>
-          <Text style={styles.field}><Ionicons name="call" size={18} color="black" />: {userDetails.phone_number}</Text>
-          <TouchableOpacity
-          style={styles.btnreg}
-          onPress={handleLogout}
-          >
-            <Ionicons name="ios-log-in" size={24} color="white" />
-            <Text style={{color:'#fff',fontWeight:'bold',paddingTop:2}}> Log out </Text>
-          </TouchableOpacity>
-
-
-        
-        
+        <View >
+          <OrderssSearch />
+        </View>
         </View>
 
-
-
-     )
-
-    
-    
-
-
-    }
-    {!loggedIn && (
-      <View style={styles.loginContainer}>
-        <Text style={styles.loginMessage}>You need to log in to view your user details.</Text>
-        <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate("Login")}>
-          <Text style={styles.loginButtonText}>Log In</Text>
-        </TouchableOpacity>
+      <View style={styles.ord}> 
+        <Text style={styles.ordtxt}> All Orders </Text>
       </View>
-  )}
 
-  <View style={styles.ord}> 
-    <Text style={styles.ordtxt}> My Orders </Text>
-  </View>
 
-  </Animated.View>
+
+     </Animated.View>
+
+  
     
-    <OrderCheckoutsList
+    <PanelList
             loading={loading}
             category={category}
             order={order}
@@ -201,9 +178,9 @@ const styles = StyleSheet.create({
     flex:1
   },
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    // justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 15,
     backgroundColor: '#fff',
@@ -215,6 +192,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 2,
+    borderBottomEndRadius:10,
+    borderBottomStartRadius:10,
+    
   },
   title: {
     fontSize: 24,
@@ -226,11 +206,10 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   loginContainer: {
-    marginBottom: 5,
+    marginBottom: 16,
     backgroundColor: '#FED7D7',
     padding: 16,
     borderRadius: 8,
-    marginVertical: 5,
   },
   loginMessage: {
     fontSize: 16,
@@ -257,8 +236,7 @@ const styles = StyleSheet.create({
 
     },
     ord:{
-      paddingBottom:10,
-      marginBottom:5,
+      padding:10
     },
     ordtxt:{
       textAlign:'center',
@@ -287,4 +265,4 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
 });
-export default ProfileScreen
+export default PanelScreen

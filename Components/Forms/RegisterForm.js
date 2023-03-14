@@ -37,7 +37,7 @@ export default function UserRegistration() {
       })
      },[])
 
-     const {longitude,latitude} = route.params;
+    //  const {longitude,latitude} = route.params;
   
   const handleSubmit = () => {
     const data = {

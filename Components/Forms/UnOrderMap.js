@@ -30,7 +30,7 @@ const UnOrderMap = () => {
     const {name,phone} = route.params;
     const unorders = useSelector(state => state.orders);
     const [orders, setOrders] = React.useState([]);
-    const [order_number, setOrderNumber] = React.useState('')
+    // const [order_number, setOrderNumber] = React.useState('')
     const [totalPrice, setTotalPrice] = React.useState(0);
     
 
@@ -181,6 +181,14 @@ const UnOrderMap = () => {
       }, [unorders])
     );
 
+    function generateUniqueId() {
+      const timestamp = Date.now().toString(36).toUpperCase();
+      const random = Math.random().toString(36).substring(2, 10).toUpperCase();
+      const hash = Math.abs(Math.random().toString().split('').reduce((p, c) => (p << 5) - p + c.charCodeAt(0), 0)).toString(36).substring(0, 8).toUpperCase();
+    
+      return `${timestamp}${random}${hash}`.substring(0, 8);
+    }
+
     const handleSubmit = async(e) => {
 
       const ids = uuid();
@@ -192,8 +200,9 @@ const UnOrderMap = () => {
           totalPrice += order.order_price;
         });
         const orderIds = orders.map(order => order.id);
+        const order_number = generateUniqueId();
       // const newItem = { id,name,image, category,price };
-      const checkout = { id:ids,items:orderIds,orderer:name,latitude:pin.latitude,longitude:pin.longitude,order_total_price:totalPrice };
+      const checkout = { id:ids,items:orderIds,orderer:name,latitude:pin.latitude,longitude:pin.longitude,order_total_price:totalPrice ,order_number};
     
       // setUnorders([...unOrders, newItem]);
     
@@ -206,7 +215,7 @@ const UnOrderMap = () => {
       if (!token) {
         // redirect the user to the login form
         console.log('no token');
-    
+        
         dispatch(addCheckout(checkout));
         
         Alert.alert(
@@ -221,10 +230,17 @@ const UnOrderMap = () => {
           { cancelable: false }
           
         );
-        const message = `New order Placed,Name: ${name}, Phone number: ${phone} order number ${order_number} Please deliver to this location ` + `https://www.google.com/maps/search/?api=1&query=${pin.latitude},${pin.longitude}`;
-
-   
-        const url = `whatsapp://send?phone=+254707801908&text=${message}`;
+        const o_number = order_number.toString()
+        const lat = (pin.latitude).toString()
+        const long = (pin.longitude).toString()
+ 
+         const message = `New order Placed \n Name: ${name}, \n Phone number: ${phone}\n Order number: ${o_number} \n Please deliver to this location: \n https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
+         console.log(message)
+ 
+         const encodedMessage = encodeURIComponent(message);
+    
+         const url = `whatsapp://send?phone=+254707801908&text=${encodedMessage}`;
+       
       
         Linking.openURL(url);
       }else {
@@ -235,16 +251,19 @@ const UnOrderMap = () => {
       const myUser = JSON.parse(user);
     
       const formData = new FormData();
+
+      const order_number = generateUniqueId();
     
       formData.append('items',orderIds);
       // formData.append('category',category);
       formData.append('orderer',myUser.id)
       formData.append('latitude',pin.latitude)
       formData.append('longitude',pin.longitude)
+      formData.append('order_number',order_number)
       
     
       console.log(formData)
-      const response = await fetch('http://192.168.237.72:8000/api/checkout/order/', {
+      const response = await fetch('https://funfood.vercel.app/api/checkout/order/', {
         method: 'POST',
         body: formData,
       });
@@ -256,7 +275,7 @@ const UnOrderMap = () => {
 
         const data = await response.json();
         console.log(data.id)
-        setOrderNumber(data.id);
+        // setOrderNumber(data.id);
         // // ...
     
         Alert.alert(
@@ -275,8 +294,8 @@ const UnOrderMap = () => {
        const lat = (pin.latitude).toString()
        const long = (pin.longitude).toString()
 
-        const message = `New order Placed,Name: ${name}, Phone number: ${phone} order number: ${o_number} Please deliver to this location https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
-        console.log(message)
+       const message = `New order Placed \n Name: ${name}, \n Phone number: ${phone}\n Order number: ${o_number} \n Please deliver to this location: \n https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
+       console.log(message)
 
         const encodedMessage = encodeURIComponent(message);
    

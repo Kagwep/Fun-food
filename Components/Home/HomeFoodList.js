@@ -29,6 +29,8 @@ const HomeFoodList = ({contentInset,contentOffset,contentContainerStyle,bounces,
 
     const [products, setProducts] = useState([]);
 
+    const [isLoading, setIsLoading] =useState(true);
+
   
       const fetchProducts = async () => {
 
@@ -45,6 +47,7 @@ const HomeFoodList = ({contentInset,contentOffset,contentContainerStyle,bounces,
         const response = await fetch(url);
         const data = await response.json();
         setProducts(data);
+        setIsLoading(false);
       }
       
 
@@ -60,6 +63,10 @@ const HomeFoodList = ({contentInset,contentOffset,contentContainerStyle,bounces,
 
   return (
     <View style={style.eventlist}>
+      { isLoading ? (
+        <ActivityIndicator />
+      ) : (
+      <View style={style.inner}>
         <Animated.FlatList 
         // contentInset={contentInset}
         // contentOffset={contentOffset}
@@ -77,6 +84,8 @@ const HomeFoodList = ({contentInset,contentOffset,contentContainerStyle,bounces,
         showsHorizontalScrollIndicator={false}
         
         />
+      </View>
+      )}
      </View>
   )
 }
@@ -90,6 +99,7 @@ const style = StyleSheet.create({
     paddingTop:10,
     paddingBottom:15,
     paddingLeft:5,
+    flex:1,
     
 } ,
      header: {
@@ -103,6 +113,9 @@ const style = StyleSheet.create({
       top: 0,
       zIndex: 10000
     },
+    inner:{
+      fles:1
+    }
 
 })
 

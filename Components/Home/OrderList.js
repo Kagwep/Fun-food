@@ -19,6 +19,7 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
 
       const [orders, setOrders] = useState([]);
       const unorders = useSelector(state => state.orders);
+      const [isLoading, setIsLoading] = useState(true);
     
     const fetchOrders = () => {
       
@@ -55,6 +56,7 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
         const data = await response.json();
         console.log(data)
         setOrders(data);
+        setIsLoading(false);
       }
       
 
@@ -78,6 +80,7 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
           } else {
             // If the token does not exist, set the orders state variable to the default value
             setOrders(unorders.orders);
+            setIsLoading(false);
             // console.log("c")
           }
         })
@@ -110,6 +113,9 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
 
   return (
     <View style={style.orderlist}>
+      { isLoading ? (
+        <ActivityIndicator />
+      ) : (
       <View style={style.inner}>
         <Animated.FlatList 
         // contentInset={contentInset}
@@ -133,6 +139,7 @@ const OrderList = ({contentInset,contentOffset,contentContainerStyle,bounces,onS
         
         />
         </View>
+      )}
      </View>
   )
 }

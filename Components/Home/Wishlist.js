@@ -32,11 +32,12 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
 
     const [wishes, setWishes] = useState([]);
     const unwishes = useSelector(state => state.wishes);
+    const [isLoading , setIsLoading] = useState(true);
 
   
       const fetchProducts = async (user) => {
 
-        let url = 'http://192.168.237.72:8000/api/wishlist/';
+        let url = 'https://funfood.vercel.app/api/wishlist/';
 
         url += `?user=${user}`;
         
@@ -52,6 +53,7 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
         const response = await fetch(url);
         const data = await response.json();
         setWishes(data);
+        setIsLoading(false);
       }
       
 
@@ -75,6 +77,7 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
           } else {
             // If the token does not exist, set the orders state variable to the default value
             setWishes(unwishes.wishes);
+            setIsLoading(false);
             // console.log("c")
           }
         })
@@ -111,7 +114,12 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
     };
 
   return (
-    <View>
+    <View style={style.eventlist}>
+      { isLoading ? (
+        <ActivityIndicator />
+      ) : (
+
+        <View style={style.inner}>
         <Animated.FlatList 
         // contentInset={contentInset}
         // contentOffset={contentOffset}
@@ -134,6 +142,8 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
         showsVerticalScrollIndicator={false}
         
         />
+      </View>
+      )}
      </View>
   )
 }
@@ -142,6 +152,7 @@ const WishList = ({contentInset,contentOffset,contentContainerStyle,bounces,onSc
 const style = StyleSheet.create({
     eventlist:{
         padding:10,
+        flex:1,
     } ,
      header: {
       height: 100,
@@ -154,6 +165,9 @@ const style = StyleSheet.create({
       top: 0,
       zIndex: 10000
     },
+    inner:{
+      flex:1,
+    }
 
 })
 

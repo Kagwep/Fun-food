@@ -28,7 +28,10 @@ const FoodDetails = () => {
    const order_count = orderCount;
    const order_price = order_count*price;
 
-   const {id, name,description,image,price,category} = route.params;
+   const {id, name,description,image,price,category,cat} = route.params;
+
+   console.log('this',id)
+   console.log('this',cat)
    useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle:'Item Details',
@@ -101,7 +104,7 @@ const FoodDetails = () => {
     const myUser = JSON.parse(user);
     
     const formData = new FormData();
-    console.log(id)
+    console.log('this',id)
   
     formData.append('item_id',id);
     formData.append('category',category);

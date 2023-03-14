@@ -2,13 +2,13 @@ import React from 'react'
 import { View,Text,FlatList,StyleSheet,Animated,ActivityIndicator } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 // import { Dummy_Data } from '../../Data/dummy';
-import OrderedItem from './OrderedItem';
+import PanelOrderedItem from './PanelOrderItems';
 import  { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const OrderedList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search,ids}) => {
+const PanelOrderedList = ({contentInset,contentOffset,contentContainerStyle,bounces,onScroll,scrollEventThrottle,navbarTranslate,loading,category,orderby,order,filter,search,ids}) => {
 
       // const [scrollY, setScrollY] = useState(0);
 
@@ -27,7 +27,7 @@ const OrderedList = ({contentInset,contentOffset,contentContainerStyle,bounces,o
     }
 
     const renderItem = ({item}) => {
-        return <OrderedItem
+        return <PanelOrderedItem
          id={item.id}
          item_details={item.item_details}
          order_amount={item.order_amount} 
@@ -114,7 +114,7 @@ const OrderedList = ({contentInset,contentOffset,contentContainerStyle,bounces,o
     const renderFooter = () => {
       return (
         <View style={{ backgroundColor: 'white', padding: 10 }}>
-          <Text style={{textAlign:'center'}}>You have {orders.length} items in Ordered List</Text>
+          <Text style={{textAlign:'center'}}>{orders.length} items in Ordered List</Text>
           <Text style={{textAlign:'center',color:'green'}}>Total: Ksh {tot}</Text>
         </View>
       );
@@ -177,4 +177,4 @@ const style = StyleSheet.create({
 
 })
 
-export default OrderedList;
+export default PanelOrderedList;

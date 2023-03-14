@@ -29,6 +29,7 @@ const OrderCheckoutsList = ({contentInset,contentOffset,priceCategory,contentCon
          longitude = {item.longitude}
          order_status = {item.order_status}
          status = {item.status}
+         order_number = {item.order_number}
 
          />
          
@@ -38,12 +39,13 @@ const OrderCheckoutsList = ({contentInset,contentOffset,priceCategory,contentCon
 
     const [products, setProducts] = useState([]);
     const uncheckouts = useSelector(state => state.checkouts);
+    const [isLoading, setIsLoading] = useState(true);
   
       const fetchProducts = async (user) => {
 
 
 
-        let url = 'http://192.168.237.72:8000/api/checkout/order-comp/';
+        let url = 'https://funfood.vercel.app/api/checkout/order-comp/';
 
         url +=  `?orderer=${user}`;
 
@@ -83,6 +85,7 @@ const OrderCheckoutsList = ({contentInset,contentOffset,priceCategory,contentCon
         const response = await fetch(url);
         const data = await response.json();
         setProducts(data);
+        setIsLoading(false);
       }
       
 
@@ -127,6 +130,11 @@ const OrderCheckoutsList = ({contentInset,contentOffset,priceCategory,contentCon
 
   return (
     <View style={style.eventlist}>
+    {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+
+        <View style={{flex:1}}>
         <Animated.FlatList 
         // contentInset={contentInset}
         // contentOffset={contentOffset}
@@ -144,6 +152,8 @@ null
         showsVerticalScrollIndicator={false}
         
         />
+        </View>
+      )}
      </View>
   )
 }
