@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addWish } from './WishReducer';
 import uuid from "uuid";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const FoodItem = ({
   id,name,description,
@@ -18,12 +19,15 @@ const FoodItem = ({
     const [unOrders, setUnorders] = useState([]);
     const dispatch = useDispatch();
     const[orderCount, setOrderCount]  = useState(1)
+    const [loading,setLoading] =useState(false);
 
     const handlePress = () => {
       setColor(color === 'white' ? 'red' : 'white');
     };
 
 const handleSubmit = async(e) => {
+
+  setLoading(true);
 
   const ids = uuid();
 
@@ -52,7 +56,9 @@ const handleSubmit = async(e) => {
     // redirect the user to the login form
     console.log('no token');
 
+
     dispatch(addOrder(order));
+    setLoading(false);
     
     Alert.alert(
       name,
@@ -95,7 +101,7 @@ const handleSubmit = async(e) => {
     // Form was successfully submitted
     console.log('Order was successfully submitted');
     
-
+    setLoading(false);
     // ...
 
     Alert.alert(
@@ -122,6 +128,7 @@ const handleSubmit = async(e) => {
   // }
   // There was an error making the request
   console.error(error);
+  setLoading(false);
 }
 
 }
@@ -215,6 +222,17 @@ const removeOrderCount = () =>{
     
   return (
     <View style={style.container}>
+      {loading ? ( 
+      <Spinner
+          //visibility of Overlay Loading Spinner
+          visible={loading}
+          //Text with the Spinner
+          textContent={'Adding order...'}
+          //Text style of the Spinner Text
+          textStyle={style.spinnerTextStyle}
+        />):(
+          <></>
+        )}
         <TouchableOpacity
         activeOpacity={1}
         style={style.card}
@@ -378,6 +396,9 @@ const style = StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
         
+      },
+      spinnerTextStyle: {
+        color: '#FFF',
       },
 
 });

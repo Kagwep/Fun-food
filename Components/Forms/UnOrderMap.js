@@ -6,13 +6,13 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
-import PDFLib, { PDFDocument, PDFPage } from 'react-native-pdf-lib';
 import * as FileSystem from 'expo-file-system';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addCheckout } from '../Home/CheckersReducer';
 import uuid from "uuid";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import { useDispatch } from 'react-redux';
 
@@ -49,82 +49,82 @@ const UnOrderMap = () => {
 
     const[locationSelected, setLocationSelected] = React.useState(false)
 
-    const [pdfData, setPdfData] = React.useState(null);
-    const generateReceiptPDF = async () => {
-      const htmlContent = `
-        <html>
-            <style>
-            table {
-              width: 100%;
-            }
-            td {
-              padding: 4px;
-            }
-            th{
-              padding:4px;
-            }
-          </style>
-          <body>
-            <h1>Receipt</h1>
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${orders
-                  .map(
-                    ({ item_details, order_price, order_count }) => `
-                      <tr>
-                        <td>${item_details.name}</td>
-                        <td>${item_details.description}</td>
-                        <td>${order_price * order_count}</td>
-                      </tr>
-                    `
-                  )
-                  .join('')}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan="2">Total amount:</td>
-                  <td>${orders.reduce(
-                    (total, { order_price, order_count }) =>
-                      total + order_price * order_count,
-                    0
-                  )}</td>
-                </tr>
-              </tfoot>
-            </table>
-          </body>
-        </html>
-      `;
+    // const [pdfData, setPdfData] = React.useState(null);
+    // const generateReceiptPDF = async () => {
+    //   const htmlContent = `
+    //     <html>
+    //         <style>
+    //         table {
+    //           width: 100%;
+    //         }
+    //         td {
+    //           padding: 4px;
+    //         }
+    //         th{
+    //           padding:4px;
+    //         }
+    //       </style>
+    //       <body>
+    //         <h1>Receipt</h1>
+    //         <table>
+    //           <thead>
+    //             <tr>
+    //               <th>Name</th>
+    //               <th>Description</th>
+    //               <th>Price</th>
+    //             </tr>
+    //           </thead>
+    //           <tbody>
+    //             ${orders
+    //               .map(
+    //                 ({ item_details, order_price, order_count }) => `
+    //                   <tr>
+    //                     <td>${item_details.name}</td>
+    //                     <td>${item_details.description}</td>
+    //                     <td>${order_price * order_count}</td>
+    //                   </tr>
+    //                 `
+    //               )
+    //               .join('')}
+    //           </tbody>
+    //           <tfoot>
+    //             <tr>
+    //               <td colspan="2">Total amount:</td>
+    //               <td>${orders.reduce(
+    //                 (total, { order_price, order_count }) =>
+    //                   total + order_price * order_count,
+    //                 0
+    //               )}</td>
+    //             </tr>
+    //           </tfoot>
+    //         </table>
+    //       </body>
+    //     </html>
+    //   `;
     
-      const { uri } = await Print.printToFileAsync({
-        html: htmlContent,
-        width: 612, // 8.5 inches
-        height: 792, // 11 inches
-      });
+    //   const { uri } = await Print.printToFileAsync({
+    //     html: htmlContent,
+    //     width: 612, // 8.5 inches
+    //     height: 792, // 11 inches
+    //   });
     
-      const fileName = 'my_pdf_file.pdf';
-      const fileUri = `${FileSystem.documentDirectory}${fileName}`;
+    //   const fileName = 'my_pdf_file.pdf';
+    //   const fileUri = `${FileSystem.documentDirectory}${fileName}`;
       
-      try {
-        await FileSystem.copyAsync({ from: uri, to: fileUri });
-        // await Sharing.shareAsync(fileUri);
-      } catch (error) {
-        console.error(error);
-      }
+    //   try {
+    //     await FileSystem.copyAsync({ from: uri, to: fileUri });
+    //     // await Sharing.shareAsync(fileUri);
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
 
-      const message = `New order Placed,Name: ${name}, Phone number: ${phone} order number ${order_number} Please deliver to this location ` + `https://www.google.com/maps/search/?api=1&query=${pin.latitude},${pin.longitude}`;
-      const encodedFileUri = encodeURIComponent(uri);
+    //   const message = `New order Placed,Name: ${name}, Phone number: ${phone} order number ${order_number} Please deliver to this location ` + `https://www.google.com/maps/search/?api=1&query=${pin.latitude},${pin.longitude}`;
+    //   const encodedFileUri = encodeURIComponent(uri);
  
-      const url = `whatsapp://send?phone=+254707801908&text=${message}&document=${encodedFileUri}`;
+    //   const url = `whatsapp://send?phone=+254707801908&text=${message}&document=${encodedFileUri}`;
     
-      Linking.openURL(url);
-    };
+    //   Linking.openURL(url);
+    // };
   
     useFocusEffect(
         React.useCallback(() => {
@@ -283,8 +283,13 @@ const UnOrderMap = () => {
           'Order submitted successfully!',
           [
             {
-              text: 'OK',
-              onPress: () => console.log('OK Pressed')
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel'
+            },
+            {
+              text: 'Home',
+              onPress: () => navigation.navigate('HomeTab')
             }
           ],
           { cancelable: false }

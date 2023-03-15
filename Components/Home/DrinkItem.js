@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { addWish } from './WishReducer';
 import { v4 as uuidv4 } from 'uuid';
 import uuid from "uuid";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const DrinkItem = ({
   id,name,description,
@@ -19,11 +20,14 @@ const DrinkItem = ({
     const [unOrders, setUnorders] = useState([]);
     const dispatch = useDispatch();
     const[orderCount, setOrderCount]  = useState(1)
+    const [loading, setLoading] = useState(false);
 
     const handlePress = () => {
       setColor(color === 'white' ? 'red' : 'white');
     };
     const handleSubmit = async(e) => {
+
+      setLoading(true);
 
       const ids = uuid();
       const order_count = orderCount;
@@ -53,6 +57,8 @@ const DrinkItem = ({
         console.log('no token');
 
         dispatch(addOrder(order));
+
+        setLoading(false);
 
         Alert.alert(
           name,
@@ -94,7 +100,7 @@ const DrinkItem = ({
       if (response.ok) {
         // Form was successfully submitted
         console.log('Order was successfully submitted');
-        
+        setLoading(false);
     
         // ...
     
@@ -115,7 +121,7 @@ const DrinkItem = ({
         console.log('Error:', response.statusText);
       }}
     } catch (error) {
-    
+      setLoading(false);
       // if (error.response.status === 401) {
       //   // redirect the user to the login form
       //   return navigation.navigate('Login');
@@ -129,6 +135,7 @@ const DrinkItem = ({
     const handleSubmitWish = async(e) => {
 
       const ids = uuid();
+    
     
     
       const newItem = { id, category };
@@ -214,6 +221,18 @@ const DrinkItem = ({
 
   return (
     <View style={style.container}>
+      {loading ? ( 
+      <Spinner
+          //visibility of Overlay Loading Spinner
+          visible={loading}
+          //Text with the Spinner
+          textContent={'Adding order...'}
+          //Text style of the Spinner Text
+          textStyle={style.spinnerTextStyle}
+        />):(
+          <></>
+        )}
+
         <TouchableOpacity
         activeOpacity={1}
         style={style.card}
@@ -381,6 +400,9 @@ const style = StyleSheet.create({
         justifyContent:'space-between',
         
       },
+  spinnerTextStyle: {
+    color: '#FFF',
+  },
 
 });
 

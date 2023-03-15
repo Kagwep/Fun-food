@@ -2,7 +2,8 @@ import React, { useState,useLayoutEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet,TouchableOpacity,Image,ImageBackground,Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {HeaderBackButton} from "@react-navigation/elements";
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const Login = () => {
 
@@ -26,9 +27,11 @@ const Login = () => {
   const [token, setToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
   const [user, setUser] = useState('');
+  const [loading,setLoading] = useState(false);
 
   const handleLogin = () => {
       // Validate the form fields
+    setLoading(true);
     if (!phoneNumber || !password) {
         // Display an error message if any of the fields are empty
         alert('Phone number and password are required');
@@ -51,6 +54,7 @@ const Login = () => {
       setToken(data.access);
       setRefreshToken(data.refresh);
       setUser(data.user);
+      setLoading(false)
       // Store the token and refresh token in AsyncStorage
       const myuser = JSON.stringify(data.user);
       AsyncStorage.setItem('token', data.access);
@@ -63,6 +67,7 @@ const Login = () => {
       // If the request fails, display an error message
       console.error(error);
       alert('Login failed');
+      setLoading(false)
     });
   }
 
@@ -103,6 +108,17 @@ const Login = () => {
               require('./funfood.webp')
             }
       />
+     {loading ? ( 
+      <Spinner
+          //visibility of Overlay Loading Spinner
+          visible={loading}
+          //Text with the Spinner
+          textContent={'please wait...'}
+          //Text style of the Spinner Text
+          textStyle={styles.spinnerTextStyle}
+        />):(
+          <></>
+        )}
     <View style={[styles.fixed, styles.scrollview]}>
       <Image style={styles.tinyLogo} source={require('./login.png')} />
       <TextInput
@@ -206,7 +222,10 @@ const styles = StyleSheet.create({
   },
  scrollview: {
    backgroundColor: 'rgba(255, 255, 255, 0.5)'
- }
+ },
+ spinnerTextStyle: {
+   color: '#FFF',
+ },
 });
 
 export default Login;

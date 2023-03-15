@@ -7,6 +7,7 @@ import { addOrder } from './OrdersReducer';
 import { useDispatch } from 'react-redux';
 import { addWish } from './WishReducer';
 import uuid from "uuid";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const FruitsItem = ({
   id,name,description,
@@ -18,6 +19,7 @@ const FruitsItem = ({
     const [unOrders, setUnorders] = useState([]);
     const dispatch = useDispatch();
     const[orderCount, setOrderCount]  = useState(1)
+    const [loading,setLoading] = useState(false);
 
     const handlePress = () => {
       setColor(color === 'white' ? 'red' : 'white');
@@ -25,6 +27,7 @@ const FruitsItem = ({
 
     const handleSubmit = async(e) => {
       const ids = uuid();
+      setLoading(true);
 
       const order_count = orderCount;
       const order_price = order_count*price;
@@ -54,6 +57,7 @@ const FruitsItem = ({
     console.log('no token');
 
     dispatch(addOrder(order));
+    setLoading(false);
 
     Alert.alert(
       name,
@@ -96,6 +100,7 @@ const FruitsItem = ({
       if (response.ok) {
         // Form was successfully submitted
         console.log('Order was successfully submitted');
+        setLoading(false);
         
     
         // ...
@@ -124,6 +129,7 @@ const FruitsItem = ({
       // }
       // There was an error making the request
       console.error(error);
+      setLoading(false);
     }
     
     }
@@ -220,6 +226,17 @@ const FruitsItem = ({
 
   return (
     <View style={style.container}>
+            {loading ? ( 
+      <Spinner
+          //visibility of Overlay Loading Spinner
+          visible={loading}
+          //Text with the Spinner
+          textContent={'Adding order...'}
+          //Text style of the Spinner Text
+          textStyle={style.spinnerTextStyle}
+        />):(
+          <></>
+        )}
         <TouchableOpacity
         activeOpacity={1}
         style={style.card}
@@ -386,6 +403,9 @@ const style = StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
         
+      },
+      spinnerTextStyle: {
+        color: '#FFF',
       },
 
 

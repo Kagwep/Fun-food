@@ -3,12 +3,16 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity,ImageBackground,Dim
 import { useNavigation , useRoute} from '@react-navigation/native';
 import {HeaderBackButton} from "@react-navigation/elements";
 import MapView, { Callout, Circle, Marker } from 'react-native-maps';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function UserRegistration() {
   const [fullNames, setFullNames] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [location, setLocation] = useState('');
   const [password, setPassword] = useState('');
+  const [loading,setLoading] = useState(false);
+  const [phoneNumberError, setPhoneNumberError] = useState('');
+  const [mes, setMes] = useState('');
 
   const [pin, setPin] = React.useState({
         
@@ -17,9 +21,27 @@ export default function UserRegistration() {
   
 })
 
+const isFormValid = () => {
+  return fullNames.trim() !== '' && phoneNumber.trim() !== '' && location.trim() !== '' && password.trim() !== '';
+};
+
   // const defaultLatitude = 37.78825;
   // const defaultLongitude = -122.4324;
-
+  const isValidPhoneNumber = (phoneNumber) => {
+    const regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    return regex.test(phoneNumber);
+  };
+  
+  const handlePhoneNumberChange = (text) => {
+    setPhoneNumber(text);
+  
+    if (!isValidPhoneNumber(text)) {
+      setPhoneNumberError('Please enter a valid phone number');
+    } else {
+      setPhoneNumberError('');
+    }
+  };
+  
 
   const navigation = useNavigation();
   const route =useRoute();
@@ -40,6 +62,9 @@ export default function UserRegistration() {
     //  const {longitude,latitude} = route.params;
   
   const handleSubmit = () => {
+    if (isFormValid()) {
+    setLoading(true);
+    setMes('')
     const data = {
       full_names: fullNames,
       phone_number: phoneNumber,
@@ -57,6 +82,7 @@ export default function UserRegistration() {
       .then(response => response.json())
       .then(data =>{
         console.log(data);
+        setLoading(false);
         Alert.alert(
           'Registration Successful!',
           'Welcome to fun food!',
@@ -72,6 +98,7 @@ export default function UserRegistration() {
         )
       .catch(error => {
       console.error(error);
+      setLoading(false);
       Alert.alert(
         'Oops!',
         'Something went wrong!',
@@ -86,6 +113,9 @@ export default function UserRegistration() {
       
       
       });
+    } else{
+      setMes("Invalid Details");
+    }
   };
 
   return (
@@ -96,22 +126,35 @@ export default function UserRegistration() {
               require('./funfood.webp')
             }
       />
-
+      {loading ? ( 
+      <Spinner
+          //visibility of Overlay Loading Spinner
+          visible={loading}
+          //Text with the Spinner
+          textContent={'please wait...'}
+          //Text style of the Spinner Text
+          textStyle={styles.spinnerTextStyle}
+        />):(
+          <></>
+        )}
+      
       <View  style={[styles.fixed, styles.scrollview]}>
       <Image style={styles.tinyLogo} source={require('./register.png')} />
-      <Text style={styles.label}>Full Names:</Text>
+      {mes ? <Text style={styles.errorMessag}>{mes}</Text> : null}
+      <Text style={styles.label}>Full Name:</Text>
       <TextInput
         style={styles.input}
         onChangeText={text => setFullNames(text)}
         value={fullNames}
       />
 
-      <Text style={styles.label}>Phone Number:</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={text => setPhoneNumber(text)}
-        value={phoneNumber}
-      />
+    <Text style={styles.label}>Phone Number:</Text>
+    <TextInput
+      style={[styles.input, phoneNumberError && styles.errorInput]}
+      onChangeText={handlePhoneNumberChange}
+      value={phoneNumber}
+    />
+    {phoneNumberError ? <Text style={styles.errorMessage}>{phoneNumberError}</Text> : null}
 
       <Text style={styles.label}>Location:</Text>
       <TextInput
@@ -130,7 +173,7 @@ export default function UserRegistration() {
 
  
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={phoneNumberError !== ''}>
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button1} onPress={() => navigation.navigate("Login")}>
@@ -224,5 +267,21 @@ map: {
       
   width: '100%',
   height: '50%',
+},
+spinnerTextStyle: {
+  color: '#FFF',
+},
+errorMessage: {
+  color: 'red',
+  fontSize: 14,
+  marginBottom: 5,
+},
+errorMessag: {
+  color: 'white',
+  fontSize: 16,
+  marginBottom: 10,
+  backgroundColor:'#345',
+  padding:5,
+  borderRadius:7,
 },
 });

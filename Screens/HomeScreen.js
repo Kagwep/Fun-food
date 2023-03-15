@@ -15,7 +15,7 @@ import HomeDrinksList from '../Components/Home/HomeDrinksList';
 
 const HEADER_HEIGHT = 250;
 
-const HEADER_MAX_HEIGHT = 350;
+const HEADER_MAX_HEIGHT = 320;
 const HEADER_MIN_HEIGHT = 184;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
@@ -170,7 +170,7 @@ const HomeScreen = () => {
         </View> */}
         
 
-        <Search setSearch={setSearch}/>
+        {/* <Search setSearch={setSearch}/> */}
         <BannersList />
 
         <CatgoryList setCategory={setCategory}/>
