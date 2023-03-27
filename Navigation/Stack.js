@@ -61,6 +61,7 @@ export const HomeStack =() => {
       <Stack.Screen name="UnOrder" component={UnOrderMap} />
       <Stack.Screen name="OrderComps" component={OrderedItemsScreen} />
       <Stack.Screen name="PanelOrderComps" component={PanelItemsScreen} />
+      <Stack.Screen name="Panel" component={PanelScreen} />
       
         
     </Stack.Navigator>
@@ -82,21 +83,7 @@ export const ProfileStack =() => {
 }
 
 
-export const PanelStack= () => {
 
-  const navigation = useNavigation();
-
-  return (
-    <Stack.Navigator
-    screenOptions={()=>NavOptions(navigation)}
-    >
-      <Stack.Screen name="Panel" component={PanelScreen} />
-  
-      </Stack.Navigator>
-  );
-
-
-}
 
 
 export const MarketStack=() => {

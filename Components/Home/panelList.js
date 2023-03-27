@@ -29,6 +29,7 @@ const PanelList = ({contentInset,contentOffset,priceCategory,contentContainerSty
          longitude = {item.longitude}
          order_status = {item.order_status}
          status = {item.status}
+         order_number={item.order_number}
 
          />
          
@@ -125,6 +126,12 @@ const PanelList = ({contentInset,contentOffset,priceCategory,contentContainerSty
     console.log(category,"dfsgdfjkl")
     console.log(priceCategory)
 
+    const renderEmptyList = () => (
+      <Text style={{textAlign:'center'}}>No items found</Text>
+    );
+
+    
+
   return (
     <View style={style.eventlist}>
           {isLoading ? (
@@ -137,9 +144,10 @@ const PanelList = ({contentInset,contentOffset,priceCategory,contentContainerSty
         contentContainerStyle={contentContainerStyle}
         bounces={false}
         scrollEventThrottle={scrollEventThrottle}
+        ListEmptyComponent={renderEmptyList}
         onScroll={onScroll}
         data = {products}
-        keyExtractor = {item => item.id}
+        keyExtractor = {item => item.order_number}
         style={{  flexGrow:1,width: '100%' }}
         renderItem = {renderItem}
         refreshControl = {

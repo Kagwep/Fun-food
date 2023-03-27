@@ -41,21 +41,14 @@ export const MyDrawer = () => {
     };
 
     checkLoggedIn();
-  }, [isFocused]);
+  }, [isFocused,admin]);
 
   return (
       <Drawer.Navigator 
         screenOptions={{headerShown: false}}>
         <Drawer.Screen name="HomeStack" component={HomeStack} options={{title:'Home'}}/>
-        {admin && shouldDisplayPanelStack && (
-          <>
-            <Drawer.Screen name="PanelStack" component={PanelStack} options={{title:'Ordered Items'}}/>
-            <Drawer.Screen name="ProfileStack" component={ProfileStack} options={{title:'Profiles'}}/>
-          </>
-        )}
-        {!admin && (
-           <Drawer.Screen name="ProfileStack" component={ProfileStack} options={{title:'Profiles'}}/>
-        )}
+        <Drawer.Screen name="ProfileStack" component={ProfileStack} options={{title:'Profiles'}}/>
+
       </Drawer.Navigator>
   );
 };

@@ -10,6 +10,7 @@ import FoodList from '../Components/Home/FoodList';
 import HomeFoodList from '../Components/Home/HomeFoodList';
 import HomeFruitsList from '../Components/Home/HomeFruitsList';
 import HomeDrinksList from '../Components/Home/HomeDrinksList';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 
@@ -21,6 +22,7 @@ const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
 const HomeScreen = () => {
 
+  const [admin,setAdmin] = useState(true);
   const navigation = useNavigation();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -119,6 +121,44 @@ const HomeScreen = () => {
   });
 
 
+  useFocusEffect(
+    React.useCallback(() => {
+      
+   
+      AsyncStorage.getItem('token')
+      .then(async token => {
+        // If the token exists, fetch the products
+        if (token) {
+          console.log(token);
+          const user = await AsyncStorage.getItem('user');
+          const myUser = JSON.parse(user);
+          if (myUser.is_admin){
+            setAdmin(true);
+            console.log('chec');
+          }
+          else{
+            setAdmin(false);
+            console.log('chec1');
+          }
+        } else {
+          // If the token does not exist, set the orders state variable to the default value
+          setAdmin(false);
+          // console.log("c")
+        }
+      })
+      .catch(error => {
+        // If there is an error, set the orders state variable to the default value
+        console.log(error)
+        // setOrders(unorders.orders);
+      });
+      let isActive = true;
+      return () => {
+        isActive = false;
+      };
+    }, [admin])
+  );
+
+
   return (
     <View style={[style.screen]}>
     <ImageBackground
@@ -199,6 +239,20 @@ const HomeScreen = () => {
       
       style={{ paddingTop: HEADER_MAX_HEIGHT}}
       >
+
+
+      {admin && (
+        <View style={style.admin}>
+        <TouchableOpacity
+        style={style.admintouch}
+        onPress={() => navigation.navigate('Panel')}
+        >
+        <Text style={style.admintext}> Ordered List</Text>
+        </TouchableOpacity>
+      </View>
+            )}
+
+
 
         <View style={style.food}>
 
@@ -472,6 +526,23 @@ const style = StyleSheet.create({
     fontSize:16,
     fontWeight:'bold',
     color:'orange'
+   },
+   admin:{
+    backgroundColor:'#ffffff',
+    alignItems:'center',
+    padding:10,
+    margin:10,
+    borderRadius:5,
+   },
+   admintouch:{
+    padding:5,
+   },
+   admintext:{
+
+    fontSize:16,
+    color:'rgb(100,0,100)',
+    fontWeight:'bold',
+
    },
 
 })

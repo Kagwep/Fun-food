@@ -4,6 +4,7 @@ import { useNavigation , useRoute} from '@react-navigation/native';
 import FoodList from '../Components/Home/FoodList';
 import {HeaderBackButton} from "@react-navigation/elements";
 import FoodSearch from '../Components/Stand/FoodSearch';
+import { Ionicons } from '@expo/vector-icons';
 
 
 const FoodScreen = () => {
@@ -33,7 +34,21 @@ const FoodScreen = () => {
   
   return (
     <View >
-    <FoodSearch />
+    <FoodSearch setSearch={setSearch}/>
+    {search && (
+        <TouchableOpacity
+        style={styles.catbac}
+        onPress={() => {
+          setSearch(null);
+        }}
+        
+        >
+
+          <Ionicons name="arrow-back-circle" size={24} color="black" />
+          <Text style={styles.catbactext}>Back</Text>
+
+        </TouchableOpacity>
+      )}
     <FoodList
          loading={loading}
          category={category}
@@ -52,6 +67,26 @@ const FoodScreen = () => {
 const styles = StyleSheet.create({
     screen:{
 
+    },
+    catbac:{
+      flexDirection:'row',
+      paddingBottom:10,
+      justifyContent:'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+      backgroundColor: 'white',
+      margin:5,
+      borderRadius:10,
+    },
+    catbactext:{
+      paddingTop:5
+      
     },
 })
 

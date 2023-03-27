@@ -116,7 +116,7 @@ const FoodDetails = () => {
     formData.append('order_made_by',myUser.id)
   
     console.log(formData)
-    const response = await fetch('http://192.168.237.72:8000/api/orders/', {
+    const response = await fetch('https://funfood.vercel.app/api/orders/', {
       method: 'POST',
   
       body: formData,
@@ -195,7 +195,7 @@ const FoodDetails = () => {
     formData.append('category',category);
     formData.append('user',myUser.id);
   
-    const response = await fetch('http://192.168.237.72:8000/api/wishlist/', {
+    const response = await fetch('https://funfood.vercel.app/api/wishlist/', {
       method: 'POST',
   
       body: formData,

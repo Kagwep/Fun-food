@@ -6,7 +6,7 @@ export default function FoodSearch({setSearch}){
 
         const [input,setInput] = useState("")
         const handleEndEditing = () => {
-            if(!input) return; setTerm(input);
+            if(!input) return; setSearch(input);
             setInput("");
         }
      
@@ -17,7 +17,7 @@ export default function FoodSearch({setSearch}){
             style = {styles.input}
             placeholder="search"
             value={input}
-            onChangeText={(text) => {setSearch(text);}}
+            onChangeText={(text) => {setInput(text);}}
             onEndEditing={handleEndEditing}
 
             />

@@ -1,6 +1,6 @@
 import React from 'react';
-import MapView, { Callout, Circle, Marker } from 'react-native-maps';
-import { StyleSheet, View,Text,TouchableOpacity , Platform, Share, Linking,Alert} from 'react-native';
+// import MapView, { Callout, Circle, Marker } from 'react-native-maps';
+import { StyleSheet, View,Text,TouchableOpacity , Platform, Share, Linking,Alert,TextInput} from 'react-native';
 import {HeaderBackButton} from "@react-navigation/elements";
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
@@ -16,6 +16,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import { useDispatch } from 'react-redux';
 
+
 const UnOrderMap = () => {
     const [pin, setPin] = React.useState({
         
@@ -23,6 +24,7 @@ const UnOrderMap = () => {
             longitude:  36.817223,
           
     })
+    const [delloc, setDeliveryLocation] = React.useState('');
     const navigation = useNavigation();
     const route = useRoute();
     const dispatch = useDispatch();
@@ -32,6 +34,10 @@ const UnOrderMap = () => {
     const [orders, setOrders] = React.useState([]);
     // const [order_number, setOrderNumber] = React.useState('')
     const [totalPrice, setTotalPrice] = React.useState(0);
+
+    function handleTypingFinished() {
+      setLocationSelected(true)
+    }
     
 
     React.useLayoutEffect(() => {
@@ -136,9 +142,10 @@ const UnOrderMap = () => {
         }, [unorders])
       );
 
-      const fetchOrders = async () => {
+      const fetchOrders = async (user) => {
 
         let url = 'https://funfood.vercel.app/api/orders/';
+        url += `?order_made_by=${user}`
         console.log('called')
 
         const response = await fetch(url);
@@ -153,19 +160,23 @@ const UnOrderMap = () => {
     // }, [category, order,search]);
 
 
+
     useFocusEffect(
       React.useCallback(() => {
         
      
         AsyncStorage.getItem('token')
-        .then(token => {
+        .then(async token => {
           // If the token exists, fetch the products
           if (token) {
             console.log(token);
-            fetchOrders();
+            const user = await AsyncStorage.getItem('user');
+            const myUser = JSON.parse(user);
+            fetchOrders(myUser.id);
           } else {
             // If the token does not exist, set the orders state variable to the default value
             setOrders(unorders.orders);
+            setIsLoading(false);
             // console.log("c")
           }
         })
@@ -234,7 +245,7 @@ const UnOrderMap = () => {
         const lat = (pin.latitude).toString()
         const long = (pin.longitude).toString()
  
-         const message = `New order Placed \n Name: ${name}, \n Phone number: ${phone}\n Order number: ${o_number} \n Please deliver to this location: \n https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
+         const message = `New order Placed \n Name: ${name}, \n Phone number: ${phone}\n Order number: ${o_number} \n Please deliver to this location: \n ${delloc}`;
          console.log(message)
  
          const encodedMessage = encodeURIComponent(message);
@@ -299,7 +310,7 @@ const UnOrderMap = () => {
        const lat = (pin.latitude).toString()
        const long = (pin.longitude).toString()
 
-       const message = `New order Placed \n Name: ${name}, \n Phone number: ${phone}\n Order number: ${o_number} \n Please deliver to this location: \n https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
+       const message = `New order Placed \n Name: ${name}, \n Phone number: ${phone}\n Order number: ${o_number} \n Please deliver to this location: \n ${delloc}`;
        console.log(message)
 
         const encodedMessage = encodeURIComponent(message);
@@ -326,7 +337,7 @@ const UnOrderMap = () => {
   return (
     <View style={styles.container}>
         <Text style={{textAlign:'center',padding:10,fontSize:20,}}> Select Your Location</Text>
-        <MapView
+        {/* <MapView
         style={styles.map}
 
         initialRegion={{
@@ -371,8 +382,24 @@ const UnOrderMap = () => {
          radius={1000}
         />
 
-        </MapView>
-        <Text style={{textAlign:'center',padding:10,fontSize:20,color:'green'}}> Tap your location to select it</Text>
+        </MapView> */}
+        <Text style={{textAlign:'center',padding:10,fontSize:20,color:'green'}}> Enter your Delivery location</Text>
+
+        {/* <Text style={styles.label}>Full Name:</Text> */}
+        <View style={styles.in}> 
+        <TextInput
+          style={styles.input}
+          multiline={true}
+          placeholder="location..."
+          onChangeText={text => {
+            setDeliveryLocation(text);
+            handleTypingFinished();
+          }}
+        
+          value={delloc}
+        />
+        </View>
+
 
 
         {locationSelected && (
@@ -436,6 +463,29 @@ const styles = StyleSheet.create({
         fontSize:20,
         paddingHorizontal:5,
         textAlign:'center'
+    },
+    label: {
+      textAlign:'center',
+      fontWeight: 'bold',
+      marginBottom: 5,
+      color:'#46f',
+      fontSize:17,
+    },
+    input: {
+      height: 90,
+      width: '80%',
+      borderColor: '#ccc',
+      borderWidth: 1,
+      borderRadius: 4,
+      paddingHorizontal: 10,
+      marginBottom: 10,
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      fontSize:16,
+      padding:5,
+    },
+    in:{
+      padding:5,
+      alignItems:'center',
     },
   });
 

@@ -140,7 +140,7 @@ const PanelScreen = () => {
         <View style={styles.container}>
           
         <View >
-          <OrderssSearch />
+          <OrderssSearch setSearch={setSearch}/>
         </View>
         </View>
 
@@ -152,8 +152,24 @@ const PanelScreen = () => {
 
      </Animated.View>
 
-  
-    
+
+     <View style={{paddingTop:HEADER_MAX_HEIGHT,flex:1}}>
+
+     {search && (
+        <TouchableOpacity
+        style={styles.catbac}
+        onPress={() => {
+          setSearch(null);
+        }}
+        
+        >
+
+          <Ionicons name="arrow-back-circle" size={24} color="black" />
+          <Text style={styles.catbactext}>Back</Text>
+
+        </TouchableOpacity>
+      )}
+
     <PanelList
             loading={loading}
             category={category}
@@ -165,11 +181,16 @@ const PanelScreen = () => {
               [{ nativeEvent: { contentOffset: { y: scrollY } } }], // event.nativeEvent.contentOffset.x to scrollX
               { useNativeDriver: true }, // use native driver for animation
             )}
-            contentContainerStyle={{ paddingTop: HEADER_MAX_HEIGHT}}
+            contentContainerStyle={{ paddingTop: 2}}
 
           />
+
+    </View>
+
+
     {/* <Button title='some Details' onPress={() => navigation.navigate('Profile',{profileId:1})}/> */}
    </View>
+
   )
 }
 
@@ -263,6 +284,26 @@ const styles = StyleSheet.create({
       backgroundColor: '#f0f0f0',
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    catbac:{
+      flexDirection:'row',
+      paddingBottom:10,
+      justifyContent:'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+      backgroundColor: 'white',
+      margin:5,
+      borderRadius:10,
+    },
+    catbactext:{
+      paddingTop:5
+      
     },
 });
 export default PanelScreen

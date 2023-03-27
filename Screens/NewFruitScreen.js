@@ -39,12 +39,12 @@ const NewFruitsScreen = () => {
   
   return (
     <View style={styles.screen}>
-    <FruitsSearch />
+    <FruitsSearch setSearch={setSearch}/>
     <View style={styles.fruicatlist}>
         <FruitCatgoryList setCategory={setCategory} setFruitCatId={setFruitCatId} catFruitId={catFruitId}/>
     </View>
     
-    {category && (
+    {(category || search) && (
         <>
         <TouchableOpacity
         style={styles.catbac}
